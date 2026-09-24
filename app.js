@@ -338,20 +338,12 @@ function createQuestionElement(question, index) {
   header.appendChild(questionText);
 
 
-  /*
-   * TTS only for multiple choice.
-   */
-  if (
-    question.questionType.toLowerCase() ===
-    "multiple choice"
-  ) {
+  
 
-    const ttsButton =
-      createTTSButton(question.question);
+  const ttsButton =
+    createTTSButton(question.question);
 
-    header.appendChild(ttsButton);
-
-  }
+  header.appendChild(ttsButton);
 
   wrapper.appendChild(header);
 
@@ -602,14 +594,7 @@ function createTextAnswer(
   /*
    * Read the question aloud.
    */
-  const ttsButton =
-    createTTSButton(question.question);
-
-  /*
-   * Put the TTS button before
-   * the answer input.
-   */
-  wrapper.appendChild(ttsButton);
+  
 
   row.appendChild(input);
   row.appendChild(micButton);
