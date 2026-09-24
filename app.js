@@ -595,6 +595,9 @@ function createTextAnswer(
   input.value =
     answers[question.questionID] || "";
 
+  const ttsButton =
+    createTTSButton(text);
+	
   const micButton =
     createMicButton(input);
 
