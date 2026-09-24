@@ -148,7 +148,9 @@ async function handleIdentitySubmit(event) {
   setConnectionMessage("Loading quiz...");
 
   try {
-
+    console.log("Quiz data:", quizData);
+    console.log("Quiz ID being sent:", quizData.quizID);
+    
     const result = await apiPost({
       action: "identify",
       name: student.name,
