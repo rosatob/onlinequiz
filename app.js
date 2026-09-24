@@ -590,16 +590,26 @@ function createTextAnswer(
   input.dataset.questionID =
     question.questionID;
 
-  input.className = "answer-input";
+  input.className =
+    "answer-input";
 
   input.value =
     answers[question.questionID] || "";
 
-  const ttsButton =
-    createTTSButton(text);
-	
   const micButton =
     createMicButton(input);
+
+  /*
+   * Read the question aloud.
+   */
+  const ttsButton =
+    createTTSButton(question.question);
+
+  /*
+   * Put the TTS button before
+   * the answer input.
+   */
+  wrapper.appendChild(ttsButton);
 
   row.appendChild(input);
   row.appendChild(micButton);
