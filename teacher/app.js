@@ -20,6 +20,8 @@ function addQuestion() {
     id: "Q" + questionCounter,
     question: "",
     type: "multiple choice",
+    imageURL: "",
+    imageName: "",
     choices: ["", "", "", ""],
     correctAnswer: "A",
     points: 1
@@ -164,6 +166,16 @@ function renderQuestions() {
 
       card.appendChild(
         questionField
+      );
+
+
+      /*
+       * IMAGE
+       */
+
+      createImageControls(
+        card,
+        question
       );
 
 
@@ -457,7 +469,235 @@ function renderQuestions() {
 
 
 /*
- * SAVE BUTTON
+ * IMAGE CONTROLS
+ */
+
+function createImageControls(
+  card,
+  question
+) {
+
+  const section =
+    document.createElement("div");
+
+  section.className =
+    "image-section";
+
+
+  const label =
+    document.createElement("div");
+
+  label.className =
+    "image-label";
+
+  label.textContent =
+    "Question Image";
+
+
+  section.appendChild(label);
+
+
+  const controls =
+    document.createElement("div");
+
+  controls.className =
+    "image-controls";
+
+
+  /*
+   * EXISTING IMAGE
+   */
+
+  const chooseButton =
+    document.createElement("button");
+
+  chooseButton.type = "button";
+
+  chooseButton.textContent =
+    "Choose Image";
+
+
+  chooseButton.addEventListener(
+    "click",
+    () => {
+
+      alert(
+        "The image library will be added here."
+      );
+
+    }
+  );
+
+
+  /*
+   * UPLOAD
+   */
+
+  const uploadButton =
+    document.createElement("button");
+
+  uploadButton.type = "button";
+
+  uploadButton.textContent =
+    "Upload New Image";
+
+
+  const fileInput =
+    document.createElement("input");
+
+  fileInput.type = "file";
+
+  fileInput.accept =
+    "image/png,image/jpeg,image/gif,image/webp";
+
+  fileInput.style.display =
+    "none";
+
+
+  uploadButton.addEventListener(
+    "click",
+    () => {
+
+      fileInput.click();
+
+    }
+  );
+
+
+  fileInput.addEventListener(
+    "change",
+    () => {
+
+      const file =
+        fileInput.files[0];
+
+      if (!file) {
+        return;
+      }
+
+
+      /*
+       * TEMPORARY PREVIEW
+       *
+       * Cloudinary upload will
+       * replace this later.
+       */
+
+      const previewURL =
+        URL.createObjectURL(file);
+
+      question.imageURL =
+        previewURL;
+
+      question.imageName =
+        file.name;
+
+      renderQuestions();
+
+    }
+  );
+
+
+  controls.appendChild(
+    chooseButton
+  );
+
+  controls.appendChild(
+    uploadButton
+  );
+
+  controls.appendChild(
+    fileInput
+  );
+
+
+  section.appendChild(
+    controls
+  );
+
+
+  /*
+   * IMAGE PREVIEW
+   */
+
+  if (question.imageURL) {
+
+    const preview =
+      document.createElement("img");
+
+    preview.className =
+      "editor-image-preview";
+
+    preview.src =
+      question.imageURL;
+
+    preview.alt =
+      question.imageName ||
+      "Question image";
+
+
+    section.appendChild(
+      preview
+    );
+
+
+    const filename =
+      document.createElement("div");
+
+    filename.className =
+      "image-filename";
+
+    filename.textContent =
+      question.imageName;
+
+
+    section.appendChild(
+      filename
+    );
+
+
+    const removeButton =
+      document.createElement("button");
+
+    removeButton.type = "button";
+
+    removeButton.textContent =
+      "Remove Image";
+
+    removeButton.className =
+      "delete-button";
+
+
+    removeButton.addEventListener(
+      "click",
+      () => {
+
+        question.imageURL =
+          "";
+
+        question.imageName =
+          "";
+
+        renderQuestions();
+
+      }
+    );
+
+
+    section.appendChild(
+      removeButton
+    );
+
+  }
+
+
+  card.appendChild(section);
+
+}
+
+
+/*
+ * SAVE
  */
 
 document
