@@ -201,6 +201,10 @@ function renderQuestions() {
         question
       );
 
+      createYouTubeControls(
+        card,
+        question
+      );
 
       /*
        * QUESTION TYPE
@@ -1304,5 +1308,170 @@ async function chooseExistingImage(question) {
     );
 
   }
+
+}
+
+function createYouTubeControls(card, question) {
+
+  const section =
+    document.createElement("div");
+
+  section.className =
+    "youtube-section";
+
+
+  const label =
+    document.createElement("label");
+
+  label.textContent =
+    "YouTube Video";
+
+
+  const input =
+    document.createElement("input");
+
+  input.type =
+    "url";
+
+  input.placeholder =
+    "Paste a YouTube URL";
+
+  input.value =
+    question.youtubeURL || "";
+
+
+  input.addEventListener(
+    "input",
+    () => {
+
+      question.youtubeURL =
+        input.value.trim();
+
+      updateYouTubePreview(
+        section,
+        question
+      );
+
+    }
+  );
+
+
+  section.appendChild(
+    label
+  );
+
+  section.appendChild(
+    input
+  );
+
+
+  updateYouTubePreview(
+    section,
+    question
+  );
+
+
+  card.appendChild(
+    section
+  );
+
+}
+
+function updateYouTubePreview(
+  section,
+  question
+) {
+
+  const oldPreview =
+    section.querySelector(
+      ".youtube-preview"
+    );
+
+  if (oldPreview) {
+    oldPreview.remove();
+  }
+
+
+  const videoID =
+    getYouTubeVideoID(
+      question.youtubeURL
+    );
+
+  if (!videoID) {
+    return;
+  }
+
+
+  const iframe =
+    document.createElement("iframe");
+
+  iframe.className =
+    "youtube-preview";
+
+  iframe.src =
+    "https://www.youtube.com/embed/" +
+    videoID;
+
+  iframe.title =
+    "YouTube video";
+
+  iframe.frameBorder =
+    "0";
+
+  iframe.allow =
+    "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+
+  iframe.allowFullscreen =
+    true;
+
+
+  section.appendChild(
+    iframe
+  );
+
+}
+
+function getYouTubeVideoID(url) {
+
+  if (!url) {
+    return null;
+  }
+
+  try {
+
+    const parsed =
+      new URL(url);
+
+    if (
+      parsed.hostname ===
+        "www.youtube.com" ||
+      parsed.hostname ===
+        "youtube.com"
+    ) {
+
+      return parsed.searchParams.get(
+        "v"
+      );
+
+    }
+
+    if (
+      parsed.hostname ===
+        "youtu.be"
+    ) {
+
+      return parsed.pathname.substring(
+        1
+      );
+
+    }
+
+  } catch (error) {
+
+    return null;
+
+  }
+
+  return null;
 
 }
