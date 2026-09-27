@@ -862,23 +862,27 @@ async function chooseExistingImage(question) {
 
   try {
 
-    /*
-     * Ask the Apps Script backend
-     * for the Media library.
-     *
-     * Replace API_URL with the
-     * same API_URL already used
-     * elsewhere in teacher/app.js.
-     */
-
     const response =
       await fetch(
         API_URL +
         "?action=getTeacherMediaImages"
       );
 
+    if (!response.ok) {
+
+      throw new Error(
+        "HTTP error " + response.status
+      );
+
+    }
+
     const result =
       await response.json();
+
+    console.log(
+      "MEDIA LIBRARY RESULT:",
+      result
+    );
 
     if (!result.success) {
 
@@ -901,10 +905,6 @@ async function chooseExistingImage(question) {
       return;
 
     }
-
-    /*
-     * Temporary visual picker.
-     */
 
     const overlay =
       document.createElement("div");
@@ -1015,7 +1015,9 @@ async function chooseExistingImage(question) {
     closeButton.addEventListener(
       "click",
       () => {
+
         overlay.remove();
+
       }
     );
 
