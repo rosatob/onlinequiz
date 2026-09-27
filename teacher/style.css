@@ -1,0 +1,215 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f5f5f5;
+  color: #222;
+}
+
+.editor-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 30px 20px 60px;
+}
+
+h1 {
+  margin-top: 0;
+  margin-bottom: 25px;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+.panel {
+  background: white;
+  border-radius: 8px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+label {
+  display: block;
+  margin-bottom: 18px;
+  font-weight: bold;
+}
+
+input[type="text"],
+textarea,
+select {
+  display: block;
+  width: 100%;
+  margin-top: 7px;
+  padding: 10px;
+  font-family: inherit;
+  font-size: 16px;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: normal;
+}
+
+.checkbox-label input {
+  width: auto;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h2 {
+  margin-bottom: 0;
+}
+
+.question-card {
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background: #fafafa;
+}
+
+.question-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.question-number {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.question-field {
+  margin-bottom: 15px;
+}
+
+.question-field label {
+  margin-bottom: 0;
+}
+
+.choices {
+  margin-top: 15px;
+}
+
+.choice-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.choice-label {
+  width: 25px;
+  font-weight: bold;
+}
+
+.choice-row input[type="text"] {
+  margin-top: 0;
+}
+
+.correct-row {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.correct-row label {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.correct-row select {
+  width: 100px;
+  margin: 0;
+}
+
+.points-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.points-row label {
+  margin: 0;
+}
+
+.points-row input {
+  width: 80px;
+}
+
+button {
+  font-family: inherit;
+  font-size: 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 9px 15px;
+  border: 1px solid #aaa;
+  background: white;
+}
+
+button:hover {
+  background: #eee;
+}
+
+.primary-button {
+  background: #1976d2;
+  color: white;
+  border-color: #1976d2;
+}
+
+.primary-button:hover {
+  background: #1565c0;
+}
+
+.delete-button {
+  color: #b00020;
+  border-color: #b00020;
+}
+
+.delete-button:hover {
+  background: #fcebed;
+}
+
+.save-area {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.save-button {
+  font-size: 17px;
+  padding: 12px 25px;
+  background: #2e7d32;
+  color: white;
+  border-color: #2e7d32;
+}
+
+.save-button:hover {
+  background: #256628;
+}
+
+.save-message {
+  font-weight: bold;
+}
