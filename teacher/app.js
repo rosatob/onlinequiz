@@ -1,3 +1,5 @@
+const API_URL = "https://script.google.com/macros/s/AKfycbwsUVEpxaPwT9TN-T2LlEgcV-rdU4e_jTSsK79COIDymqpzfSNPfRR8y1remfpJfZ9uqA/exec";
+
 let questions = [];
 
 let questionCounter = 0;
