@@ -337,3 +337,31 @@ button:hover {
   margin-top: 10px;
   font-size: 14px;
 }
+
+.youtube-section {
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: white;
+}
+
+.youtube-section label {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.youtube-section input {
+  display: block;
+  width: 100%;
+  margin-top: 7px;
+}
+
+.youtube-preview {
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  aspect-ratio: 16 / 9;
+  margin-top: 15px;
+  border: 0;
+}
