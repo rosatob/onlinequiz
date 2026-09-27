@@ -474,10 +474,7 @@ function renderQuestions() {
  * IMAGE CONTROLS
  */
 
-function createImageControls(
-  card,
-  question
-) {
+function createImageControls(card, question) {
 
   const section =
     document.createElement("div");
@@ -494,7 +491,6 @@ function createImageControls(
 
   label.textContent =
     "Question Image";
-
 
   section.appendChild(label);
 
@@ -518,15 +514,14 @@ function createImageControls(
   chooseButton.textContent =
     "Choose Image";
 
-
   chooseButton.addEventListener(
     "click",
     () => {
-  
+
       chooseExistingImage(
         question
       );
-  
+
     }
   );
 
@@ -556,136 +551,6 @@ function createImageControls(
     "none";
 
 
-  uploadButton.addEventListener(
-    "click",
-    () => {
-
-      fileInput.click();
-
-    }
-  );
-
-
-  fileInput.addEventListener(
-    "change",
-    async () => {
-  
-      const file =
-        fileInput.files[0];
-  
-      if (!file) {
-        return;
-      }
-  
-      const allowedTypes = [
-        "image/png",
-        "image/jpeg",
-        "image/gif",
-        "image/webp"
-      ];
-  
-      if (!allowedTypes.includes(file.type)) {
-  
-        alert(
-          "Please choose a PNG, JPEG, GIF, or WebP image."
-        );
-  
-        fileInput.value = "";
-  
-        return;
-      }
-  
-      if (file.size > 10 * 1024 * 1024) {
-  
-        alert(
-          "The image must be smaller than 10 MB."
-        );
-  
-        fileInput.value = "";
-  
-        return;
-      }
-  
-      uploadButton.disabled = true;
-  
-      uploadButton.textContent =
-        "Uploading...";
-  
-      try {
-  
-        const formData =
-          new FormData();
-  
-        formData.append(
-          "file",
-          file
-        );
-  
-        formData.append(
-          "upload_preset",
-          "quiz_images"
-        );
-  
-        formData.append(
-          "asset_folder",
-          "quiz-images"
-        );
-  
-        const response =
-          await fetch(
-            "https://api.cloudinary.com/v1_1/rugxb33q/image/upload",
-            {
-              method: "POST",
-              body: formData
-            }
-          );
-  
-        const result =
-          await response.json();
-  
-        if (!response.ok || !result.secure_url) {
-  
-          console.error(
-            "Cloudinary upload failed:",
-            result
-          );
-  
-          throw new Error(
-            "Cloudinary upload failed."
-          );
-        }
-  
-        question.imageURL =
-          result.secure_url;
-  
-        question.imageName =
-          file.name;
-  
-        renderQuestions();
-  
-      } catch (error) {
-  
-        console.error(error);
-  
-        alert(
-          "The image could not be uploaded."
-        );
-  
-      } finally {
-  
-        uploadButton.disabled = false;
-  
-        uploadButton.textContent =
-          "Upload New Image";
-  
-        fileInput.value = "";
-  
-      }
-  
-    }
-  );
-
-
   controls.appendChild(
     chooseButton
   );
@@ -705,7 +570,353 @@ function createImageControls(
 
 
   /*
-   * IMAGE PREVIEW
+   * IMAGE NAME + UPLOAD AREA
+   *
+   * Hidden until a file is selected.
+   */
+
+  const uploadArea =
+    document.createElement("div");
+
+  uploadArea.className =
+    "image-upload-area";
+
+  uploadArea.style.display =
+    "none";
+
+
+  const nameLabel =
+    document.createElement("label");
+
+  nameLabel.textContent =
+    "Image Name";
+
+
+  const nameInput =
+    document.createElement("input");
+
+  nameInput.type =
+    "text";
+
+  nameInput.placeholder =
+    "Enter a name for this image";
+
+  nameInput.className =
+    "image-name-input";
+
+
+  nameLabel.appendChild(
+    nameInput
+  );
+
+
+  const confirmUploadButton =
+    document.createElement("button");
+
+  confirmUploadButton.type =
+    "button";
+
+  confirmUploadButton.textContent =
+    "Upload Image";
+
+  confirmUploadButton.className =
+    "primary-button";
+
+
+  const cancelUploadButton =
+    document.createElement("button");
+
+  cancelUploadButton.type =
+    "button";
+
+  cancelUploadButton.textContent =
+    "Cancel";
+
+
+  const uploadStatus =
+    document.createElement("div");
+
+  uploadStatus.className =
+    "image-upload-status";
+
+
+  uploadArea.appendChild(
+    nameLabel
+  );
+
+  uploadArea.appendChild(
+    confirmUploadButton
+  );
+
+  uploadArea.appendChild(
+    cancelUploadButton
+  );
+
+  uploadArea.appendChild(
+    uploadStatus
+  );
+
+
+  section.appendChild(
+    uploadArea
+  );
+
+
+  /*
+   * SELECT FILE
+   */
+
+  uploadButton.addEventListener(
+    "click",
+    () => {
+
+      fileInput.click();
+
+    }
+  );
+
+
+  fileInput.addEventListener(
+    "change",
+    () => {
+
+      const file =
+        fileInput.files[0];
+
+      if (!file) {
+        return;
+      }
+
+
+      const allowedTypes = [
+        "image/png",
+        "image/jpeg",
+        "image/gif",
+        "image/webp"
+      ];
+
+
+      if (
+        !allowedTypes.includes(
+          file.type
+        )
+      ) {
+
+        alert(
+          "Please choose a PNG, JPEG, GIF, or WebP image."
+        );
+
+        fileInput.value = "";
+
+        return;
+
+      }
+
+
+      if (
+        file.size >
+        10 * 1024 * 1024
+      ) {
+
+        alert(
+          "The image must be smaller than 10 MB."
+        );
+
+        fileInput.value = "";
+
+        return;
+
+      }
+
+
+      /*
+       * Default the name to the
+       * filename without extension.
+       */
+
+      nameInput.value =
+        file.name.replace(
+          /\.[^/.]+$/,
+          ""
+        );
+
+
+      uploadArea.style.display =
+        "block";
+
+      nameInput.focus();
+
+    }
+  );
+
+
+  /*
+   * CANCEL UPLOAD
+   */
+
+  cancelUploadButton.addEventListener(
+    "click",
+    () => {
+
+      fileInput.value = "";
+
+      nameInput.value = "";
+
+      uploadArea.style.display =
+        "none";
+
+      uploadStatus.textContent =
+        "";
+
+    }
+  );
+
+
+  /*
+   * CONFIRM UPLOAD
+   */
+
+  confirmUploadButton.addEventListener(
+    "click",
+    async () => {
+
+      const file =
+        fileInput.files[0];
+
+      if (!file) {
+        return;
+      }
+
+
+      const imageName =
+        nameInput.value.trim();
+
+
+      if (!imageName) {
+
+        alert(
+          "Please enter an image name."
+        );
+
+        nameInput.focus();
+
+        return;
+
+      }
+
+
+      confirmUploadButton.disabled =
+        true;
+
+      cancelUploadButton.disabled =
+        true;
+
+      uploadStatus.textContent =
+        "Uploading...";
+
+
+      try {
+
+        const formData =
+          new FormData();
+
+
+        formData.append(
+          "file",
+          file
+        );
+
+
+        formData.append(
+          "upload_preset",
+          "quiz_images"
+        );
+
+
+        formData.append(
+          "asset_folder",
+          "quiz-images"
+        );
+
+
+        /*
+         * Use the teacher's image name
+         * as the Cloudinary public ID.
+         */
+
+        formData.append(
+          "public_id",
+          imageName
+        );
+
+
+        const response =
+          await fetch(
+            "https://api.cloudinary.com/v1_1/rugxb33q/image/upload",
+            {
+              method: "POST",
+              body: formData
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !result.secure_url
+        ) {
+
+          console.error(
+            "Cloudinary upload failed:",
+            result
+          );
+
+          throw new Error(
+            "Cloudinary upload failed."
+          );
+
+        }
+
+
+        question.imageURL =
+          result.secure_url;
+
+        question.imageName =
+          imageName;
+
+
+        renderQuestions();
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        uploadStatus.textContent =
+          "Upload failed.";
+
+        alert(
+          "The image could not be uploaded."
+        );
+
+
+        confirmUploadButton.disabled =
+          false;
+
+        cancelUploadButton.disabled =
+          false;
+
+      }
+
+    }
+  );
+
+
+  /*
+   * CURRENT IMAGE PREVIEW
    */
 
   if (question.imageURL) {
@@ -747,7 +958,8 @@ function createImageControls(
     const removeButton =
       document.createElement("button");
 
-    removeButton.type = "button";
+    removeButton.type =
+      "button";
 
     removeButton.textContent =
       "Remove Image";
@@ -779,7 +991,9 @@ function createImageControls(
   }
 
 
-  card.appendChild(section);
+  card.appendChild(
+    section
+  );
 
 }
 
