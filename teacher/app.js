@@ -4,6 +4,27 @@ let questions = [];
 
 let questionCounter = 0;
 
+async function apiPost(data) {
+
+  const response =
+    await fetch(
+      API_URL,
+      {
+        method: "POST",
+        redirect: "follow",
+        headers: {
+          "Content-Type":
+            "text/plain;charset=utf-8"
+        },
+        body:
+          JSON.stringify(data)
+      }
+    );
+
+  return await response.json();
+
+}
+
 
 /*
  * ADD QUESTION
@@ -887,6 +908,27 @@ function createImageControls(card, question) {
         question.imageName =
           imageName;
 
+        const mediaResult =
+          await apiPost({
+            action: "addMediaImage",
+        
+            name:
+              imageName,
+        
+            url:
+              result.secure_url
+          });
+        
+        if (
+          !mediaResult.success
+        ) {
+        
+          throw new Error(
+            mediaResult.error ||
+            "Unable to add image to Media library."
+          );
+        
+        }
 
         renderQuestions();
 
