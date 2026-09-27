@@ -520,11 +520,11 @@ function createImageControls(
   chooseButton.addEventListener(
     "click",
     () => {
-
-      alert(
-        "The image library will be added here."
+  
+      chooseExistingImage(
+        question
       );
-
+  
     }
   );
 
@@ -857,3 +857,192 @@ function saveQuiz() {
  */
 
 addQuestion();
+
+async function chooseExistingImage(question) {
+
+  try {
+
+    /*
+     * Ask the Apps Script backend
+     * for the Media library.
+     *
+     * Replace API_URL with the
+     * same API_URL already used
+     * elsewhere in teacher/app.js.
+     */
+
+    const response =
+      await fetch(
+        API_URL +
+        "?action=getMediaImages"
+      );
+
+    const result =
+      await response.json();
+
+    if (!result.success) {
+
+      throw new Error(
+        result.error ||
+        "Unable to load images."
+      );
+
+    }
+
+    const images =
+      result.images || [];
+
+    if (images.length === 0) {
+
+      alert(
+        "No images are available."
+      );
+
+      return;
+
+    }
+
+    /*
+     * Temporary visual picker.
+     */
+
+    const overlay =
+      document.createElement("div");
+
+    overlay.className =
+      "image-picker-overlay";
+
+
+    const picker =
+      document.createElement("div");
+
+    picker.className =
+      "image-picker";
+
+
+    const heading =
+      document.createElement("h2");
+
+    heading.textContent =
+      "Choose Image";
+
+    picker.appendChild(
+      heading
+    );
+
+
+    const grid =
+      document.createElement("div");
+
+    grid.className =
+      "image-picker-grid";
+
+
+    images.forEach(image => {
+
+      const item =
+        document.createElement("button");
+
+      item.type = "button";
+
+      item.className =
+        "image-picker-item";
+
+
+      const thumbnail =
+        document.createElement("img");
+
+      thumbnail.src =
+        image.url;
+
+      thumbnail.alt =
+        image.name;
+
+
+      const name =
+        document.createElement("div");
+
+      name.textContent =
+        image.name;
+
+
+      item.appendChild(
+        thumbnail
+      );
+
+      item.appendChild(
+        name
+      );
+
+
+      item.addEventListener(
+        "click",
+        () => {
+
+          question.imageURL =
+            image.url;
+
+          question.imageName =
+            image.name;
+
+          overlay.remove();
+
+          renderQuestions();
+
+        }
+      );
+
+
+      grid.appendChild(item);
+
+    });
+
+
+    picker.appendChild(
+      grid
+    );
+
+
+    const closeButton =
+      document.createElement("button");
+
+    closeButton.type = "button";
+
+    closeButton.textContent =
+      "Cancel";
+
+
+    closeButton.addEventListener(
+      "click",
+      () => {
+        overlay.remove();
+      }
+    );
+
+
+    picker.appendChild(
+      closeButton
+    );
+
+    overlay.appendChild(
+      picker
+    );
+
+    document.body.appendChild(
+      overlay
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Image library error:",
+      error
+    );
+
+    alert(
+      "Unable to load the image library."
+    );
+
+  }
+
+}
