@@ -305,3 +305,35 @@ button:hover {
   object-fit: contain;
   margin-bottom: 8px;
 }
+
+.image-upload-area {
+  margin-top: 15px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #f8f8f8;
+}
+
+.image-upload-area label {
+  margin-bottom: 12px;
+}
+
+.image-name-input {
+  display: block;
+  width: 100%;
+  margin-top: 7px;
+  padding: 10px;
+  font-family: inherit;
+  font-size: 16px;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+}
+
+.image-upload-area button {
+  margin-right: 10px;
+}
+
+.image-upload-status {
+  margin-top: 10px;
+  font-size: 14px;
+}
