@@ -874,7 +874,7 @@ async function chooseExistingImage(question) {
     const response =
       await fetch(
         API_URL +
-        "?action=getMediaImages"
+        "?action=getTeacherMediaImages"
       );
 
     const result =
