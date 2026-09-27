@@ -566,34 +566,120 @@ function createImageControls(
 
   fileInput.addEventListener(
     "change",
-    () => {
-
+    async () => {
+  
       const file =
         fileInput.files[0];
-
+  
       if (!file) {
         return;
       }
-
-
-      /*
-       * TEMPORARY PREVIEW
-       *
-       * Cloudinary upload will
-       * replace this later.
-       */
-
-      const previewURL =
-        URL.createObjectURL(file);
-
-      question.imageURL =
-        previewURL;
-
-      question.imageName =
-        file.name;
-
-      renderQuestions();
-
+  
+      const allowedTypes = [
+        "image/png",
+        "image/jpeg",
+        "image/gif",
+        "image/webp"
+      ];
+  
+      if (!allowedTypes.includes(file.type)) {
+  
+        alert(
+          "Please choose a PNG, JPEG, GIF, or WebP image."
+        );
+  
+        fileInput.value = "";
+  
+        return;
+      }
+  
+      if (file.size > 10 * 1024 * 1024) {
+  
+        alert(
+          "The image must be smaller than 10 MB."
+        );
+  
+        fileInput.value = "";
+  
+        return;
+      }
+  
+      uploadButton.disabled = true;
+  
+      uploadButton.textContent =
+        "Uploading...";
+  
+      try {
+  
+        const formData =
+          new FormData();
+  
+        formData.append(
+          "file",
+          file
+        );
+  
+        formData.append(
+          "upload_preset",
+          "quiz_images"
+        );
+  
+        formData.append(
+          "asset_folder",
+          "quiz-images"
+        );
+  
+        const response =
+          await fetch(
+            "https://api.cloudinary.com/v1_1/rugxb33q/image/upload",
+            {
+              method: "POST",
+              body: formData
+            }
+          );
+  
+        const result =
+          await response.json();
+  
+        if (!response.ok || !result.secure_url) {
+  
+          console.error(
+            "Cloudinary upload failed:",
+            result
+          );
+  
+          throw new Error(
+            "Cloudinary upload failed."
+          );
+        }
+  
+        question.imageURL =
+          result.secure_url;
+  
+        question.imageName =
+          file.name;
+  
+        renderQuestions();
+  
+      } catch (error) {
+  
+        console.error(error);
+  
+        alert(
+          "The image could not be uploaded."
+        );
+  
+      } finally {
+  
+        uploadButton.disabled = false;
+  
+        uploadButton.textContent =
+          "Upload New Image";
+  
+        fileInput.value = "";
+  
+      }
+  
     }
   );
 
