@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Quiz Editor</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <main class="editor-container">
+
+    <h1>Quiz Editor</h1>
+
+    <!-- QUIZ INFORMATION -->
+    <section class="panel">
+
+      <h2>Quiz Information</h2>
+
+      <label>
+        Quiz Title
+        <input
+          type="text"
+          id="quiz-title"
+          placeholder="Enter quiz title"
+        >
+      </label>
+
+      <label>
+        Description
+        <textarea
+          id="quiz-description"
+          placeholder="Enter a description"
+          rows="3"
+        ></textarea>
+      </label>
+
+      <label class="checkbox-label">
+
+        <input
+          type="checkbox"
+          id="allow-editing"
+        >
+
+        Allow students to edit their answers after submitting
+
+      </label>
+
+    </section>
+
+
+    <!-- QUESTIONS -->
+    <section class="panel">
+
+      <div class="section-header">
+
+        <h2>Questions</h2>
+
+        <button
+          type="button"
+          id="add-question"
+          class="primary-button"
+        >
+          + Add Question
+        </button>
+
+      </div>
+
+      <div id="questions-container"></div>
+
+    </section>
+
+
+    <!-- SAVE -->
+    <div class="save-area">
+
+      <button
+        type="button"
+        id="save-quiz"
+        class="save-button"
+      >
+        Save Quiz
+      </button>
+
+      <div
+        id="save-message"
+        class="save-message"
+      ></div>
+
+    </div>
+
+  </main>
+
+
+  <script src="app.js"></script>
+
+</body>
+
+</html>
