@@ -1937,9 +1937,24 @@ async function loadQuiz() {
       );
     }
 
+    document.getElementById("quiz-title").value =
+      result.quiz.title || "";
+    
+    document.getElementById("quiz-description").value =
+      result.quiz.description || "";
+    
+    document.getElementById("allow-editing").checked =
+      result.quiz.allowEditing === true;
+    
+    questions = result.questions || [];
+    
+    questionCounter = questions.length;
+    
+    renderQuestions();
+    
     console.log(
-      "Loaded quiz:",
-      result
+      "Loaded quiz into editor:",
+      result.quiz.quizID
     );
 
   } catch (error) {
