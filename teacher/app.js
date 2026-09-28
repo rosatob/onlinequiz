@@ -1907,3 +1907,57 @@ document
     }, 1500);
 
   });
+
+async function loadQuiz() {
+
+  const quizID =
+    document
+      .getElementById("quiz-id")
+      .value
+      .trim();
+
+  if (!quizID) {
+    alert("Please enter a QuizID.");
+    return;
+  }
+
+  try {
+
+    const result =
+      await apiPost({
+        action: "getQuiz",
+        quizID: quizID
+      });
+
+    if (!result.success) {
+      throw new Error(
+        result.error ||
+        "Unable to load quiz."
+      );
+    }
+
+    console.log(
+      "Loaded quiz:",
+      result
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Load quiz error:",
+      error
+    );
+
+    alert(
+      "Unable to load quiz.\n\n" +
+      error.message
+    );
+  }
+}
+
+document
+  .getElementById("load-quiz")
+  .addEventListener(
+    "click",
+    loadQuiz
+  );
