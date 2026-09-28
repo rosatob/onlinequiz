@@ -1414,9 +1414,9 @@ async function saveQuiz() {
       "Unable to save quiz.";
 
     alert(
-      "Unable to save quiz.\n\n" +
-      error.message
-    );
+        "Save error:\n\n" +
+        error.message
+      );
 
   }
 
