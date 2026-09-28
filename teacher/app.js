@@ -131,13 +131,84 @@ function renderQuestions() {
         }
       );
 
+      const duplicateButton =
+        document.createElement("button");
+      
+      duplicateButton.type =
+        "button";
+      
+      duplicateButton.textContent =
+        "Duplicate";
+      
+      duplicateButton.addEventListener(
+        "click",
+        () => {
+      
+          const newQuestion = {
+            questionID:
+              "Q" +
+              Date.now(),
+      
+            question:
+              question.question,
+      
+            questionType:
+              question.questionType,
+      
+            imageURL:
+              question.imageURL,
+      
+            imageName:
+              question.imageName,
+      
+            youtubeURL:
+              question.youtubeURL,
+      
+            choiceA:
+              question.choiceA,
+      
+            choiceB:
+              question.choiceB,
+      
+            choiceC:
+              question.choiceC,
+      
+            choiceD:
+              question.choiceD,
+      
+            correctAnswer:
+              question.correctAnswer,
+      
+            pointsPossible:
+              question.pointsPossible
+          };
+      
+          const index =
+            questions.indexOf(
+              question
+            );
+      
+          questions.splice(
+            index + 1,
+            0,
+            newQuestion
+          );
+      
+          renderQuestions();
+      
+        }
+      );
 
       header.appendChild(number);
 
       header.appendChild(
         deleteButton
       );
-
+      
+      header.appendChild(
+        duplicateButton
+      );
+      
       card.appendChild(header);
 
 
