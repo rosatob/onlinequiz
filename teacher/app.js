@@ -217,8 +217,8 @@ function renderQuestions() {
             question:
               question.question,
       
-            questionType:
-              question.questionType,
+            questionType: "multiple choice",
+
       
             imageURL:
               question.imageURL,
@@ -244,8 +244,7 @@ function renderQuestions() {
             correctAnswer:
               question.correctAnswer,
       
-            pointsPossible:
-              question.pointsPossible
+            pointsPossible: 1,
           };
       
           const index =
