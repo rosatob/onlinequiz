@@ -4,6 +4,8 @@ let questions = [];
 
 let questionCounter = 0;
 
+let loadedQuizID = null;
+
 async function apiPost(data) {
 
   const response =
@@ -1938,7 +1940,12 @@ async function loadQuiz() {
     }
 
     console.log("Loaded quiz response:", result);
-    
+    loadedQuizID = result.quiz.quizID;
+
+    console.log(
+      "Editing existing QuizID:",
+      loadedQuizID
+    );
     document.getElementById("quiz-description").value =
       result.quiz.description || "";
     
