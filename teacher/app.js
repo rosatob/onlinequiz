@@ -1446,7 +1446,19 @@ async function saveQuiz() {
       "Quiz saved. QuizID: " +
       quizID;
 
-
+    const quizLink =
+      window.location.origin +
+      "/quiz/?quiz=" +
+      encodeURIComponent(quizID);
+    
+    document.getElementById(
+      "quiz-link"
+    ).value = quizLink;
+    
+    document.getElementById(
+      "quiz-link-area"
+    ).style.display = "block";
+    
     console.log(
       "Quiz saved:",
       quizID
@@ -1871,3 +1883,27 @@ function moveQuestion(
 
 }
 
+document
+  .getElementById("copy-quiz-link")
+  .addEventListener("click", async () => {
+
+    const link =
+      document.getElementById(
+        "quiz-link"
+      ).value;
+
+    await navigator.clipboard.writeText(link);
+
+    document.getElementById(
+      "copy-quiz-link"
+    ).textContent = "Copied!";
+
+    setTimeout(() => {
+
+      document.getElementById(
+        "copy-quiz-link"
+      ).textContent = "Copy Link";
+
+    }, 1500);
+
+  });
