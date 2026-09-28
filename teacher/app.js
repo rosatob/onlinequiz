@@ -1448,7 +1448,7 @@ async function saveQuiz() {
 
     const quizLink =
       window.location.origin +
-      "/quiz/?quiz=" +
+      "/onlinequiz/?quiz=" +
       encodeURIComponent(quizID);
     
     document.getElementById(
