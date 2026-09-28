@@ -138,7 +138,7 @@ function renderQuestions() {
         "button";
       
       duplicateButton.textContent =
-        "Duplicate";
+        "Duplicate Question";
       
       duplicateButton.addEventListener(
         "click",
