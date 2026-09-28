@@ -133,8 +133,17 @@ function renderQuestions() {
         }
       );
 
+      const reorderButtons =
+        document.createElement("div");
+      
+      reorderButtons.className =
+        "reorder-buttons";
+      
       const upButton =
         document.createElement("button");
+      
+      upButton.className =
+        "reorder-button";
       
       upButton.type = "button";
       
@@ -158,6 +167,9 @@ function renderQuestions() {
       
       const downButton =
         document.createElement("button");
+      
+      downButton.className =
+        "reorder-button";
       
       downButton.type = "button";
       
@@ -262,14 +274,17 @@ function renderQuestions() {
         duplicateButton
       );
 
-      header.appendChild(
+      reorderButtons.appendChild(
         upButton
       );
       
-      header.appendChild(
+      reorderButtons.appendChild(
         downButton
       );
-
+      
+      header.appendChild(
+        reorderButtons
+      );
       
       
       card.appendChild(header);
