@@ -388,3 +388,20 @@ button:hover {
   cursor: default;
 }
 
+.quiz-link-area {
+  margin-top: 20px;
+}
+
+.quiz-link-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.quiz-link-row input {
+  flex: 1;
+}
+
+.quiz-link-row button {
+  white-space: nowrap;
+}
