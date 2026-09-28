@@ -133,6 +133,51 @@ function renderQuestions() {
         }
       );
 
+      const upButton =
+        document.createElement("button");
+      
+      upButton.type = "button";
+      
+      upButton.textContent = "↑";
+      
+      upButton.title =
+        "Move question up";
+      
+      upButton.addEventListener(
+        "click",
+        () => {
+      
+          moveQuestion(
+            index,
+            -1
+          );
+      
+        }
+      );
+      
+      
+      const downButton =
+        document.createElement("button");
+      
+      downButton.type = "button";
+      
+      downButton.textContent = "↓";
+      
+      downButton.title =
+        "Move question down";
+      
+      downButton.addEventListener(
+        "click",
+        () => {
+      
+          moveQuestion(
+            index,
+            1
+          );
+      
+        }
+      );
+      
       const duplicateButton =
         document.createElement("button");
       
@@ -210,8 +255,20 @@ function renderQuestions() {
       header.appendChild(
         duplicateButton
       );
+
+      header.appendChild(
+        upButton
+      );
       
+      header.appendChild(
+        downButton
+      );
+
+      upButton.disabled =
+        index === 0;
       
+      downButton.disabled =
+        index === questions.length - 1;
       
       card.appendChild(header);
       
