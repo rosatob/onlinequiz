@@ -449,52 +449,65 @@ function renderQuestions() {
           "choices";
 
 
-        question.choices.forEach(
-          (choice, choiceIndex) => {
-
+        const choiceProperties = [
+          "choiceA",
+          "choiceB",
+          "choiceC",
+          "choiceD"
+        ];
+        
+        choiceProperties.forEach(
+          (property, choiceIndex) => {
+        
             const row =
               document.createElement("div");
-
+        
             row.className =
               "choice-row";
-
-
+        
             const label =
               document.createElement("div");
-
+        
             label.className =
               "choice-label";
-
+        
             label.textContent =
               String.fromCharCode(
                 65 + choiceIndex
               );
-
-
+        
             const input =
               document.createElement("input");
-
+        
             input.type = "text";
-
-            input.value = choice;
-
+        
+            input.value =
+              question[property] || "";
+        
             input.placeholder =
               "Answer choice " +
               String.fromCharCode(
                 65 + choiceIndex
               );
-
-
+        
             input.addEventListener(
               "input",
               () => {
-
-                question.choices[
-                  choiceIndex
-                ] = input.value;
-
+        
+                question[property] =
+                  input.value;
+        
               }
             );
+        
+            row.appendChild(label);
+        
+            row.appendChild(input);
+        
+            choices.appendChild(row);
+        
+          }
+        );
 
 
             row.appendChild(label);
@@ -603,14 +616,14 @@ function renderQuestions() {
         pointsInput.step = "1";
 
         pointsInput.value =
-          question.points;
+          question.pointsPossible;
 
 
         pointsInput.addEventListener(
           "input",
           () => {
 
-            question.points =
+            question.pointsPossible =
               Number(
                 pointsInput.value
               ) || 0;
