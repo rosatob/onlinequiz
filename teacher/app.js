@@ -40,14 +40,41 @@ function addQuestion() {
   questionCounter++;
 
   const question = {
-    id: "Q" + questionCounter,
-    question: "",
-    type: "multiple choice",
-    imageURL: "",
-    imageName: "",
-    choices: ["", "", "", ""],
-    correctAnswer: "A",
-    points: 1
+    id:
+      "Q" + questionCounter,
+
+    question:
+      "",
+
+    questionType:
+      "multiple choice",
+
+    imageURL:
+      "",
+
+    imageName:
+      "",
+
+    youtubeURL:
+      "",
+
+    choiceA:
+      "",
+
+    choiceB:
+      "",
+
+    choiceC:
+      "",
+
+    choiceD:
+      "",
+
+    correctAnswer:
+      "A",
+
+    pointsPossible:
+      1
   };
 
   questions.push(question);
@@ -217,7 +244,8 @@ function renderQuestions() {
             question:
               question.question,
       
-            questionType: "multiple choice",
+            questionType:
+              question.questionType,
 
       
             imageURL:
@@ -244,7 +272,8 @@ function renderQuestions() {
             correctAnswer:
               question.correctAnswer,
       
-            pointsPossible: 1,
+            pointsPossible:
+              question.pointsPossible
           };
       
           const index =
