@@ -40,7 +40,7 @@ function addQuestion() {
   questionCounter++;
 
   const question = {
-    id:
+    questionID:
       "Q" + questionCounter,
 
     question:
@@ -106,8 +106,8 @@ function renderQuestions() {
       card.className =
         "question-card";
 
-      card.dataset.id =
-        question.id;
+      card.dataset.questionID =
+        question.questionID;
 
       card.dataset.index = index;
 
@@ -152,7 +152,7 @@ function renderQuestions() {
           questions =
             questions.filter(
               item =>
-                item.id !== question.id
+                item.questionID !== question.questionID
             );
 
           renderQuestions();
