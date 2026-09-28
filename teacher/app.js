@@ -510,14 +510,7 @@ function renderQuestions() {
         );
 
 
-            row.appendChild(label);
-
-            row.appendChild(input);
-
-            choices.appendChild(row);
-
-          }
-        );
+            
 
 
         /*
@@ -590,9 +583,7 @@ function renderQuestions() {
 
         
 
-        choices.appendChild(
-          pointsRow
-        );
+        
 
 
         card.appendChild(choices);
