@@ -274,8 +274,7 @@ function renderQuestions() {
       
       card.appendChild(header);
       
-        }
-      );
+      
 
       /*
        * QUESTION TEXT
