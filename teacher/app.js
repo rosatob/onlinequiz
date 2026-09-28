@@ -1221,7 +1221,7 @@ document
   );
 
 
-function saveQuiz() {
+async function saveQuiz() {
 
   const title =
     document
@@ -1246,24 +1246,13 @@ function saveQuiz() {
    * ------------------------- */
 
   if (!title) {
-
-    alert(
-      "Please enter a quiz title."
-    );
-
+    alert("Please enter a quiz title.");
     return;
-
   }
 
-
   if (questions.length === 0) {
-
-    alert(
-      "Please add at least one question."
-    );
-
+    alert("Please add at least one question.");
     return;
-
   }
 
 
@@ -1277,11 +1266,8 @@ function saveQuiz() {
     i++
   ) {
 
-    const question =
-      questions[i];
-
-    const questionNumber =
-      i + 1;
+    const question = questions[i];
+    const questionNumber = i + 1;
 
 
     if (
@@ -1296,7 +1282,6 @@ function saveQuiz() {
       );
 
       return;
-
     }
 
 
@@ -1316,7 +1301,6 @@ function saveQuiz() {
       );
 
       return;
-
     }
 
 
@@ -1351,9 +1335,7 @@ function saveQuiz() {
           );
 
           return;
-
         }
-
       }
 
 
@@ -1371,30 +1353,72 @@ function saveQuiz() {
         );
 
         return;
-
       }
-
     }
-
   }
 
 
   /* -------------------------
-   * VALIDATION PASSED
+   * SAVE QUIZ METADATA
    * ------------------------- */
 
-  console.log({
-    title,
-    description,
-    allowEditing,
-    questions
-  });
+  const saveMessage =
+    document.getElementById(
+      "save-message"
+    );
+
+  saveMessage.textContent =
+    "Saving quiz...";
 
 
-  document
-    .getElementById("save-message")
-    .textContent =
-      "Quiz is ready to save.";
+  try {
+
+    const result =
+      await apiPost({
+        action: "saveQuiz",
+        title: title,
+        description: description,
+        allowEditing: allowEditing
+      });
+
+
+    if (!result.success) {
+
+      throw new Error(
+        result.error ||
+        "Unable to save quiz."
+      );
+
+    }
+
+
+    console.log(
+      "Quiz saved:",
+      result
+    );
+
+
+    saveMessage.textContent =
+      "Quiz saved. QuizID: " +
+      result.quizID;
+
+
+  } catch (error) {
+
+    console.error(
+      "Save quiz error:",
+      error
+    );
+
+    saveMessage.textContent =
+      "Unable to save quiz.";
+
+    alert(
+      "Unable to save quiz.\n\n" +
+      error.message
+    );
+
+  }
 
 }
 
