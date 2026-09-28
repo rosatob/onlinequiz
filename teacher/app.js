@@ -1231,6 +1231,7 @@ function saveQuiz() {
  */
 
 addQuestion();
+setupQuestionDragging();
 
 async function chooseExistingImage(question) {
 
@@ -1674,9 +1675,10 @@ function setupQuestionDragging() {
         });
 
       renderQuestions();
+      
+
 
     }
   );
 
 }
-setupQuestionDragging();
