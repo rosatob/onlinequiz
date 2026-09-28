@@ -365,3 +365,23 @@ button:hover {
   margin-top: 15px;
   border: 0;
 }
+
+.question-card {
+  cursor: default;
+}
+
+.question-card.dragging {
+  opacity: 0.5;
+}
+
+.question-drag-handle {
+  cursor: grab;
+  font-size: 20px;
+  color: #777;
+  margin-right: 10px;
+  user-select: none;
+}
+
+.question-drag-handle:active {
+  cursor: grabbing;
+}
