@@ -40,41 +40,18 @@ function addQuestion() {
   questionCounter++;
 
   const question = {
-    questionID:
-      "Q" + questionCounter,
-
-    question:
-      "",
-
-    questionType:
-      "multiple choice",
-
-    imageURL:
-      "",
-
-    imageName:
-      "",
-
-    youtubeURL:
-      "",
-
-    choiceA:
-      "",
-
-    choiceB:
-      "",
-
-    choiceC:
-      "",
-
-    choiceD:
-      "",
-
-    correctAnswer:
-      "A",
-
-    pointsPossible:
-      1
+    questionID: "Q" + questionCounter,
+    question: "",
+    questionType: "multiple choice",
+    imageURL: "",
+    imageName: "",
+    youtubeURL: "",
+    choiceA: "",
+    choiceB: "",
+    choiceC: "",
+    choiceD: "",
+    correctAnswer: "A",
+    pointsPossible: 1
   };
 
   questions.push(question);
@@ -106,7 +83,7 @@ function renderQuestions() {
       card.className =
         "question-card";
 
-      card.dataset.questionID =
+      card.dataset.id =
         question.questionID;
 
       card.dataset.index = index;
