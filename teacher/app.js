@@ -588,57 +588,7 @@ function renderQuestions() {
         );
 
 
-        /*
-         * POINTS
-         */
-
-        const pointsRow =
-          document.createElement("div");
-
-        pointsRow.className =
-          "points-row";
-
-
-        const pointsLabel =
-          document.createElement("label");
-
-        pointsLabel.textContent =
-          "Points Possible";
-
-
-        const pointsInput =
-          document.createElement("input");
-
-        pointsInput.type = "number";
-
-        pointsInput.min = "0";
-
-        pointsInput.step = "1";
-
-        pointsInput.value =
-          question.pointsPossible;
-
-
-        pointsInput.addEventListener(
-          "input",
-          () => {
-
-            question.pointsPossible =
-              Number(
-                pointsInput.value
-              ) || 0;
-
-          }
-        );
-
-
-        pointsRow.appendChild(
-          pointsLabel
-        );
-
-        pointsRow.appendChild(
-          pointsInput
-        );
+        
 
         choices.appendChild(
           pointsRow
@@ -649,6 +599,60 @@ function renderQuestions() {
 
       }
 
+      /*
+       * POINTS
+       */
+      
+      const pointsRow =
+        document.createElement("div");
+      
+      pointsRow.className =
+        "points-row";
+      
+      const pointsLabel =
+        document.createElement("label");
+      
+      pointsLabel.textContent =
+        "Points Possible";
+      
+      const pointsInput =
+        document.createElement("input");
+      
+      pointsInput.type =
+        "number";
+      
+      pointsInput.min =
+        "0";
+      
+      pointsInput.step =
+        "1";
+      
+      pointsInput.value =
+        question.pointsPossible;
+      
+      pointsInput.addEventListener(
+        "input",
+        () => {
+      
+          question.pointsPossible =
+            Number(
+              pointsInput.value
+            ) || 0;
+      
+        }
+      );
+      
+      pointsRow.appendChild(
+        pointsLabel
+      );
+      
+      pointsRow.appendChild(
+        pointsInput
+      );
+      
+      card.appendChild(
+        pointsRow
+      );
 
       container.appendChild(card);
 
