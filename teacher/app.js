@@ -1937,8 +1937,7 @@ async function loadQuiz() {
       );
     }
 
-    document.getElementById("quiz-title").value =
-      result.quiz.title || "";
+    console.log("Loaded quiz response:", result);
     
     document.getElementById("quiz-description").value =
       result.quiz.description || "";
