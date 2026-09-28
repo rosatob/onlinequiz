@@ -1241,24 +1241,31 @@ async function saveQuiz() {
       .checked;
 
 
-  /* -------------------------
-   * BASIC VALIDATION
-   * ------------------------- */
-
   if (!title) {
-    alert("Please enter a quiz title.");
+
+    alert(
+      "Please enter a quiz title."
+    );
+
     return;
+
   }
+
 
   if (questions.length === 0) {
-    alert("Please add at least one question.");
+
+    alert(
+      "Please add at least one question."
+    );
+
     return;
+
   }
 
 
-  /* -------------------------
-   * QUESTION VALIDATION
-   * ------------------------- */
+  /*
+   * Validate questions
+   */
 
   for (
     let i = 0;
@@ -1282,6 +1289,7 @@ async function saveQuiz() {
       );
 
       return;
+
     }
 
 
@@ -1301,6 +1309,7 @@ async function saveQuiz() {
       );
 
       return;
+
     }
 
 
@@ -1335,7 +1344,9 @@ async function saveQuiz() {
           );
 
           return;
+
         }
+
       }
 
 
@@ -1353,14 +1364,13 @@ async function saveQuiz() {
         );
 
         return;
+
       }
+
     }
+
   }
 
-
-  /* -------------------------
-   * SAVE QUIZ METADATA
-   * ------------------------- */
 
   const saveMessage =
     document.getElementById(
@@ -1373,34 +1383,79 @@ async function saveQuiz() {
 
   try {
 
-    const result =
+    /*
+     * First create the quiz record.
+     */
+
+    const quizResult =
       await apiPost({
+
         action: "saveQuiz",
+
         title: title,
+
         description: description,
+
         allowEditing: allowEditing
+
       });
 
 
-    if (!result.success) {
+    if (!quizResult.success) {
 
       throw new Error(
-        result.error ||
+        quizResult.error ||
         "Unable to save quiz."
       );
 
     }
 
 
-    console.log(
-      "Quiz saved:",
-      result
-    );
+    const quizID =
+      quizResult.quizID;
+
+
+    /*
+     * Then save all questions
+     * using the new QuizID.
+     */
+
+    const questionResult =
+      await apiPost({
+
+        action: "saveQuestions",
+
+        quizID: quizID,
+
+        questions: questions
+
+      });
+
+
+    if (!questionResult.success) {
+
+      throw new Error(
+        questionResult.error ||
+        "Unable to save questions."
+      );
+
+    }
 
 
     saveMessage.textContent =
       "Quiz saved. QuizID: " +
-      result.quizID;
+      quizID;
+
+
+    console.log(
+      "Quiz saved:",
+      quizID
+    );
+
+    console.log(
+      "Questions saved:",
+      questionResult.count
+    );
 
 
   } catch (error) {
@@ -1410,13 +1465,15 @@ async function saveQuiz() {
       error
     );
 
+
     saveMessage.textContent =
       "Unable to save quiz.";
 
+
     alert(
-        "Save error:\n\n" +
-        error.message
-      );
+      "Unable to save quiz.\n\n" +
+      error.message
+    );
 
   }
 
