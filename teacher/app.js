@@ -1556,4 +1556,31 @@ function getYouTubeVideoID(url) {
 
 }
 
+function moveQuestion(
+  index,
+  direction
+) {
+
+  const newIndex =
+    index + direction;
+
+  if (
+    newIndex < 0 ||
+    newIndex >= questions.length
+  ) {
+    return;
+  }
+
+  const temp =
+    questions[index];
+
+  questions[index] =
+    questions[newIndex];
+
+  questions[newIndex] =
+    temp;
+
+  renderQuestions();
+
+}
 
