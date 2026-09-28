@@ -1241,6 +1241,10 @@ function saveQuiz() {
       .checked;
 
 
+  /* -------------------------
+   * BASIC VALIDATION
+   * ------------------------- */
+
   if (!title) {
 
     alert(
@@ -1263,6 +1267,122 @@ function saveQuiz() {
   }
 
 
+  /* -------------------------
+   * QUESTION VALIDATION
+   * ------------------------- */
+
+  for (
+    let i = 0;
+    i < questions.length;
+    i++
+  ) {
+
+    const question =
+      questions[i];
+
+    const questionNumber =
+      i + 1;
+
+
+    if (
+      !question.question ||
+      !question.question.trim()
+    ) {
+
+      alert(
+        "Question " +
+        questionNumber +
+        " needs question text."
+      );
+
+      return;
+
+    }
+
+
+    if (
+      question.pointsPossible === undefined ||
+      question.pointsPossible === null ||
+      Number.isNaN(
+        Number(question.pointsPossible)
+      ) ||
+      Number(question.pointsPossible) < 0
+    ) {
+
+      alert(
+        "Question " +
+        questionNumber +
+        " needs a valid Points Possible value."
+      );
+
+      return;
+
+    }
+
+
+    if (
+      question.questionType ===
+      "multiple choice"
+    ) {
+
+      const choices = [
+        question.choiceA,
+        question.choiceB,
+        question.choiceC,
+        question.choiceD
+      ];
+
+
+      for (
+        let j = 0;
+        j < choices.length;
+        j++
+      ) {
+
+        if (
+          !choices[j] ||
+          !choices[j].trim()
+        ) {
+
+          alert(
+            "Question " +
+            questionNumber +
+            " needs all four answer choices."
+          );
+
+          return;
+
+        }
+
+      }
+
+
+      if (
+        !["A", "B", "C", "D"]
+          .includes(
+            question.correctAnswer
+          )
+      ) {
+
+        alert(
+          "Question " +
+          questionNumber +
+          " needs a valid correct answer."
+        );
+
+        return;
+
+      }
+
+    }
+
+  }
+
+
+  /* -------------------------
+   * VALIDATION PASSED
+   * ------------------------- */
+
   console.log({
     title,
     description,
@@ -1274,7 +1394,7 @@ function saveQuiz() {
   document
     .getElementById("save-message")
     .textContent =
-      "Quiz data ready to save.";
+      "Quiz is ready to save.";
 
 }
 
