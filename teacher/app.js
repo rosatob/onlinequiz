@@ -177,6 +177,12 @@ function renderQuestions() {
       
         }
       );
+
+      upButton.disabled =
+        index === 0;
+      
+      downButton.disabled =
+        index === questions.length - 1;
       
       const duplicateButton =
         document.createElement("button");
@@ -264,11 +270,7 @@ function renderQuestions() {
         downButton
       );
 
-      upButton.disabled =
-        index === 0;
       
-      downButton.disabled =
-        index === questions.length - 1;
       
       card.appendChild(header);
       
