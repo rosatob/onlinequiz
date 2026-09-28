@@ -404,14 +404,14 @@ function renderQuestions() {
 
 
       typeSelect.value =
-        question.type;
+        question.questionType;
 
 
       typeSelect.addEventListener(
         "change",
         () => {
 
-          question.type =
+          question.questionType =
             typeSelect.value;
 
           renderQuestions();
@@ -438,7 +438,7 @@ function renderQuestions() {
        */
 
       if (
-        question.type ===
+        question.questionType ===
         "multiple choice"
       ) {
 
