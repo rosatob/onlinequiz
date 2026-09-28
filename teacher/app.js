@@ -82,6 +82,7 @@ function renderQuestions() {
       card.dataset.id =
         question.id;
 
+      card.dataset.index = index;
 
       /*
        * HEADER
@@ -93,6 +94,17 @@ function renderQuestions() {
       header.className =
         "question-card-header";
 
+      const dragHandle =
+        document.createElement("span");
+      
+      dragHandle.className =
+        "question-drag-handle";
+      
+      dragHandle.textContent =
+        "☰";
+      
+      dragHandle.title =
+        "Drag to reorder";
 
       const number =
         document.createElement("div");
@@ -209,8 +221,35 @@ function renderQuestions() {
         duplicateButton
       );
       
+      header.appendChild(
+        dragHandle
+      );
+      
       card.appendChild(header);
 
+      card.draggable = true;
+
+      card.addEventListener(
+        "dragstart",
+        () => {
+      
+          card.classList.add(
+            "dragging"
+          );
+      
+        }
+      );
+      
+      card.addEventListener(
+        "dragend",
+        () => {
+      
+          card.classList.remove(
+            "dragging"
+          );
+      
+        }
+      );
 
       /*
        * QUESTION TEXT
@@ -564,6 +603,8 @@ function renderQuestions() {
   );
 
 }
+
+
 
 
 /*
@@ -1546,3 +1587,96 @@ function getYouTubeVideoID(url) {
   return null;
 
 }
+
+function setupQuestionDragging() {
+
+  const container =
+    document.getElementById(
+      "questions-container"
+    );
+
+  container.addEventListener(
+    "dragover",
+    event => {
+
+      event.preventDefault();
+
+      const dragging =
+        container.querySelector(
+          ".dragging"
+        );
+
+      if (!dragging) {
+        return;
+      }
+
+      const cards =
+        [
+          ...container.querySelectorAll(
+            ".question-card:not(.dragging)"
+          )
+        ];
+
+      const nextCard =
+        cards.find(card => {
+
+          const rect =
+            card.getBoundingClientRect();
+
+          return (
+            event.clientY <
+            rect.top +
+            rect.height / 2
+          );
+
+        });
+
+      if (nextCard) {
+
+        container.insertBefore(
+          dragging,
+          nextCard
+        );
+
+      } else {
+
+        container.appendChild(
+          dragging
+        );
+
+      }
+
+    }
+  );
+
+
+  container.addEventListener(
+    "drop",
+    () => {
+
+      const orderedCards =
+        [
+          ...container.querySelectorAll(
+            ".question-card"
+          )
+        ];
+
+      questions =
+        orderedCards.map(card => {
+
+          const index =
+            Number(
+              card.dataset.index
+            );
+
+          return questions[index];
+
+        });
+
+      renderQuestions();
+
+    }
+  );
+
+}
+setupQuestionDragging();
