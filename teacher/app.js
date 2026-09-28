@@ -1909,7 +1909,7 @@ document
   });
 
 async function loadQuiz() {
-
+  console.log("loadQuiz function loaded");
   const quizID =
     document
       .getElementById("quiz-id")
@@ -1961,3 +1961,4 @@ document
     "click",
     loadQuiz
   );
+console.log("Load Quiz button listener attached");
