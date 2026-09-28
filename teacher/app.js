@@ -1922,6 +1922,7 @@ async function loadQuiz() {
   }
 
   try {
+    console.log("Loading QuizID:", quizID);
 
     const result =
       await apiPost({
