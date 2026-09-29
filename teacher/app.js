@@ -19,13 +19,50 @@ async function apiPost(data) {
             "text/plain;charset=utf-8"
         },
         body:
-          JSON.stringify(data)
+          JSON.stringify({
+            ...data,
+            idToken: window.teacherAuth?.idToken || ""
+          })
       }
     );
 
   return await response.json();
 
 }
+
+async function loadQuizList(selectedQuizID) {
+  const select = document.getElementById("quiz-id");
+  const status = document.getElementById("quiz-list-status");
+  status.textContent = "Loading quizzes...";
+
+  try {
+    const result = await apiPost({ action: "listTeacherQuizzes" });
+    if (!result.success) throw new Error(result.error || "Unable to load quizzes.");
+
+    select.replaceChildren(new Option("Create a new quiz", ""));
+    (result.quizzes || []).forEach(quiz => {
+      const option = new Option(
+        (quiz.title || "Untitled quiz") + " (" + quiz.quizID + ")",
+        quiz.quizID
+      );
+      select.appendChild(option);
+    });
+
+    if (selectedQuizID && !Array.from(select.options).some(option => option.value === selectedQuizID)) {
+      select.appendChild(new Option(selectedQuizID, selectedQuizID));
+    }
+    select.value = selectedQuizID || "";
+    status.textContent = (result.quizzes || []).length + " quiz" +
+      ((result.quizzes || []).length === 1 ? "" : "zes") + " available.";
+  } catch (error) {
+    status.textContent = "Quiz list unavailable: " + error.message;
+    console.error("Load quiz list error:", error);
+  }
+}
+
+window.addEventListener("teacher-auth-ready", () => {
+  loadQuizList(loadedQuizID);
+});
 
 
 /*
@@ -1228,6 +1265,16 @@ async function saveQuiz() {
       .checked;
 
 
+  const selectedQuizID = document.getElementById("quiz-id").value;
+  if (selectedQuizID && selectedQuizID !== loadedQuizID) {
+    alert("Load the selected quiz before saving it.");
+    return;
+  }
+  if (loadedQuizID && !selectedQuizID) {
+    alert("Reload the current quiz before saving, or start a new quiz in a fresh editor page.");
+    return;
+  }
+
   if (!title) {
 
     alert(
@@ -1405,7 +1452,11 @@ async function saveQuiz() {
 
     // Keep this ID so subsequent saves update the same quiz.
     loadedQuizID = quizID;
-    document.getElementById("quiz-id").value = quizID;
+    const quizSelect = document.getElementById("quiz-id");
+    if (!Array.from(quizSelect.options).some(option => option.value === quizID)) {
+      quizSelect.appendChild(new Option(title + " (" + quizID + ")", quizID));
+    }
+    quizSelect.value = quizID;
 
 
     /*
