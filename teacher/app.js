@@ -52,8 +52,9 @@ async function loadQuizList(selectedQuizID) {
       select.appendChild(new Option(selectedQuizID, selectedQuizID));
     }
     select.value = selectedQuizID || "";
-    status.textContent = (result.quizzes || []).length + " quiz" +
-      ((result.quizzes || []).length === 1 ? "" : "zes") + " available.";
+    const quizCount = (result.quizzes || []).length;
+    status.textContent = quizCount +
+      (quizCount === 1 ? " quiz available." : " quizzes available.");
   } catch (error) {
     status.textContent = "Quiz list unavailable: " + error.message;
     console.error("Load quiz list error:", error);
@@ -1478,9 +1479,13 @@ async function saveQuiz() {
     // Keep this ID so subsequent saves update the same quiz.
     loadedQuizID = quizID;
     const quizSelect = document.getElementById("quiz-id");
-    if (!Array.from(quizSelect.options).some(option => option.value === quizID)) {
-      quizSelect.appendChild(new Option(title + " (" + quizID + ")", quizID));
+    let quizOption = Array.from(quizSelect.options)
+      .find(option => option.value === quizID);
+    if (!quizOption) {
+      quizOption = new Option("", quizID);
+      quizSelect.appendChild(quizOption);
     }
+    quizOption.textContent = title + " (" + quizID + ")";
     quizSelect.value = quizID;
 
 
