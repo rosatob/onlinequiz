@@ -52,8 +52,9 @@ async function loadQuizList(selectedQuizID) {
       select.appendChild(new Option(selectedQuizID, selectedQuizID));
     }
     select.value = selectedQuizID || "";
-    status.textContent = (result.quizzes || []).length + " quiz" +
-      ((result.quizzes || []).length === 1 ? "" : "zes") + " available.";
+    const quizCount = (result.quizzes || []).length;
+    status.textContent = quizCount +
+      (quizCount === 1 ? " quiz available." : " quizzes available.");
   } catch (error) {
     status.textContent = "Quiz list unavailable: " + error.message;
     console.error("Load quiz list error:", error);
@@ -63,6 +64,31 @@ async function loadQuizList(selectedQuizID) {
 window.addEventListener("teacher-auth-ready", () => {
   loadQuizList(loadedQuizID);
 });
+
+document.getElementById("new-quiz").addEventListener("click", startNewQuiz);
+
+function startNewQuiz() {
+  const hasContent = Boolean(
+    loadedQuizID ||
+    document.getElementById("quiz-title").value.trim() ||
+    questions.some(question => question.question.trim())
+  );
+
+  if (hasContent && !window.confirm("Start a new quiz? Unsaved editor changes will be cleared.")) {
+    return;
+  }
+
+  loadedQuizID = null;
+  document.getElementById("quiz-id").value = "";
+  document.getElementById("quiz-title").value = "";
+  document.getElementById("quiz-description").value = "";
+  document.getElementById("allow-editing").checked = false;
+  document.getElementById("save-message").textContent = "";
+  document.getElementById("quiz-link-area").style.display = "none";
+  questions = [];
+  questionCounter = 0;
+  addQuestion();
+}
 
 
 /*
@@ -1453,9 +1479,13 @@ async function saveQuiz() {
     // Keep this ID so subsequent saves update the same quiz.
     loadedQuizID = quizID;
     const quizSelect = document.getElementById("quiz-id");
-    if (!Array.from(quizSelect.options).some(option => option.value === quizID)) {
-      quizSelect.appendChild(new Option(title + " (" + quizID + ")", quizID));
+    let quizOption = Array.from(quizSelect.options)
+      .find(option => option.value === quizID);
+    if (!quizOption) {
+      quizOption = new Option("", quizID);
+      quizSelect.appendChild(quizOption);
     }
+    quizOption.textContent = title + " (" + quizID + ")";
     quizSelect.value = quizID;
 
 
@@ -1547,22 +1577,8 @@ async function chooseExistingImage(question) {
 
   try {
 
-    const response =
-      await fetch(
-        API_URL +
-        "?action=getTeacherMediaImages"
-      );
-
-    if (!response.ok) {
-
-      throw new Error(
-        "HTTP error " + response.status
-      );
-
-    }
-
     const result =
-      await response.json();
+      await apiPost({ action: "getTeacherMediaImages" });
 
     console.log(
       "MEDIA LIBRARY RESULT:",

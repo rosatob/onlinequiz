@@ -4,7 +4,7 @@
  */
 (() => {
   const ALLOWED_DOMAIN = "sfusd.edu";
-  const GOOGLE_CLIENT_ID = "REPLACE_WITH_GOOGLE_OAUTH_WEB_CLIENT_ID";
+  const GOOGLE_CLIENT_ID = "261731970237-u6jlichq228l780as0ssnrsl5oqqroi7.apps.googleusercontent.com";
 
   window.teacherAuth = {
     idToken: null,
@@ -28,7 +28,8 @@
   function handleCredential(response) {
     try {
       const encoded = response.credential.split(".")[1];
-      const base64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
+      let base64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
+      base64 += "=".repeat((4 - (base64.length % 4)) % 4);
       const claims = JSON.parse(atob(base64));
 
       if (claims.hd !== ALLOWED_DOMAIN) {
