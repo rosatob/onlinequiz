@@ -353,15 +353,7 @@ function renderQuestions() {
        * IMAGE
        */
 
-      createImageControls(
-        card,
-        question
-      );
-
-      createYouTubeControls(
-        card,
-        question
-      );
+      createMediaControls(card, question);
 
       /*
        * QUESTION TYPE
@@ -525,63 +517,42 @@ function renderQuestions() {
          */
 
         const correctRow =
-          document.createElement("div");
+          document.createElement("fieldset");
 
         correctRow.className =
           "correct-row";
 
+        const correctLegend =
+          document.createElement("legend");
 
-        const correctLabel =
-          document.createElement("label");
-
-        correctLabel.textContent =
+        correctLegend.textContent =
           "Correct Answer";
 
+        correctRow.appendChild(correctLegend);
 
-        const correctSelect =
-          document.createElement("select");
+        ["A", "B", "C", "D"].forEach(letter => {
+          const optionLabel =
+            document.createElement("label");
 
+          optionLabel.className = "correct-option";
 
-        ["A", "B", "C", "D"]
-          .forEach(letter => {
+          const radio =
+            document.createElement("input");
 
-            const option =
-              document.createElement("option");
-
-            option.value = letter;
-
-            option.textContent =
-              letter;
-
-            correctSelect.appendChild(
-              option
-            );
-
+          radio.type = "radio";
+          radio.name = "correct-" + question.questionID;
+          radio.value = letter;
+          radio.checked = question.correctAnswer === letter;
+          radio.addEventListener("change", () => {
+            question.correctAnswer = letter;
           });
 
-
-        correctSelect.value =
-          question.correctAnswer;
-
-
-        correctSelect.addEventListener(
-          "change",
-          () => {
-
-            question.correctAnswer =
-              correctSelect.value;
-
-          }
-        );
-
-
-        correctRow.appendChild(
-          correctLabel
-        );
-
-        correctRow.appendChild(
-          correctSelect
-        );
+          optionLabel.appendChild(radio);
+          optionLabel.appendChild(
+            document.createTextNode(letter + ": " + (question["choice" + letter] || ""))
+          );
+          correctRow.appendChild(optionLabel);
+        });
 
         choices.appendChild(
           correctRow
@@ -666,13 +637,27 @@ function renderQuestions() {
  * IMAGE CONTROLS
  */
 
+function createMediaControls(card, question) {
+  const section = document.createElement("section");
+  section.className = "media-section";
+
+  const heading = document.createElement("h3");
+  heading.textContent = "Question Media";
+  section.appendChild(heading);
+
+  createImageControls(section, question);
+  createYouTubeControls(section, question);
+  card.appendChild(section);
+}
+
+
 function createImageControls(card, question) {
 
   const section =
     document.createElement("div");
 
   section.className =
-    "image-section";
+    "media-image-controls";
 
 
   const label =
@@ -1704,7 +1689,7 @@ function createYouTubeControls(card, question) {
     document.createElement("div");
 
   section.className =
-    "youtube-section";
+    "media-youtube-controls";
 
 
   const label =
