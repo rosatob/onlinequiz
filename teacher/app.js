@@ -1394,6 +1394,8 @@ async function saveQuiz() {
 
         action: "saveQuiz",
 
+        quizID: loadedQuizID,
+
         title: title,
 
         description: description,
@@ -1416,10 +1418,14 @@ async function saveQuiz() {
     const quizID =
       quizResult.quizID;
 
+    // Keep this ID so subsequent saves update the same quiz.
+    loadedQuizID = quizID;
+    document.getElementById("quiz-id").value = quizID;
+
 
     /*
      * Then save all questions
-     * using the new QuizID.
+     * using the existing or newly created QuizID.
      */
 
     const questionResult =
@@ -1445,7 +1451,7 @@ async function saveQuiz() {
 
 
     saveMessage.textContent =
-      "Quiz saved. QuizID: " +
+      (quizResult.created ? "Quiz created. QuizID: " : "Quiz saved. QuizID: ") +
       quizID;
 
     const quizLink =
@@ -1941,6 +1947,9 @@ async function loadQuiz() {
 
     console.log("Loaded quiz response:", result);
     loadedQuizID = result.quiz.quizID;
+    document.getElementById("quiz-id").value = loadedQuizID;
+    document.getElementById("quiz-title").value =
+      result.quiz.title || "";
 
     console.log(
       "Editing existing QuizID:",
