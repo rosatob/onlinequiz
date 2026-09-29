@@ -405,3 +405,129 @@ button:hover {
 .quiz-link-row button {
   white-space: nowrap;
 }
+
+
+/* Compact, scannable quiz editor controls */
+.question-card {
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.question-card-header {
+  margin-bottom: 12px;
+  gap: 8px;
+}
+
+.question-number {
+  font-size: 16px;
+}
+
+.question-field,
+.question-field label {
+  margin-bottom: 10px;
+}
+
+.question-field textarea,
+.choice-row input[type="text"],
+.youtube-section input,
+.media-youtube-controls input {
+  font-size: 14px;
+  padding: 8px 10px;
+}
+
+.choices {
+  margin-top: 8px;
+}
+
+.choice-row {
+  margin-bottom: 7px;
+}
+
+.correct-row {
+  min-width: 0;
+  margin: 12px 0 0;
+  padding: 8px 10px 10px;
+  border: 1px solid #d9dee7;
+  border-radius: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+}
+
+.correct-row legend {
+  padding: 0 4px;
+  font-weight: 700;
+}
+
+.correct-option {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 0;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.correct-option input {
+  margin: 2px 0 0;
+  accent-color: #1976d2;
+}
+
+.media-section {
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: white;
+}
+
+.media-section > h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+
+.media-image-controls,
+.media-youtube-controls {
+  margin: 0;
+  padding: 8px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.media-image-controls + .media-youtube-controls {
+  border-top: 1px solid #e7e7e7;
+}
+
+.media-image-controls .image-label {
+  display: none;
+}
+
+.media-youtube-controls label {
+  margin-bottom: 6px;
+}
+
+.media-youtube-controls input {
+  margin-top: 4px;
+}
+
+.add-question-footer {
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
+}
+
+@media (max-width: 640px) {
+  .panel {
+    padding: 16px;
+  }
+
+  .question-card-header {
+    flex-wrap: wrap;
+  }
+
+  .correct-row {
+    gap: 8px 10px;
+  }
+}
