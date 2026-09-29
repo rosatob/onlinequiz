@@ -1547,22 +1547,8 @@ async function chooseExistingImage(question) {
 
   try {
 
-    const response =
-      await fetch(
-        API_URL +
-        "?action=getTeacherMediaImages"
-      );
-
-    if (!response.ok) {
-
-      throw new Error(
-        "HTTP error " + response.status
-      );
-
-    }
-
     const result =
-      await response.json();
+      await apiPost({ action: "getTeacherMediaImages" });
 
     console.log(
       "MEDIA LIBRARY RESULT:",
