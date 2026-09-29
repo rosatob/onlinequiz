@@ -531,3 +531,81 @@ button:hover {
     gap: 8px 10px;
   }
 }
+
+
+.sign-in-gate {
+  max-width: 520px;
+  margin: 10vh auto;
+  padding: 32px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+}
+
+.sign-in-gate p {
+  line-height: 1.5;
+  color: #4d5662;
+}
+
+.auth-message,
+.field-status {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  color: #5d6672;
+}
+
+.teacher-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  margin-bottom: 22px;
+}
+
+.teacher-header h1 {
+  margin: 0;
+}
+
+.teacher-header nav {
+  display: flex;
+  gap: 8px;
+}
+
+.teacher-header nav a {
+  color: #174ea6;
+  padding: 8px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.teacher-header nav a.active {
+  color: #174ea6;
+  background: #e8f0fe;
+  font-weight: 700;
+}
+
+.account-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #59616b;
+  font-size: 14px;
+}
+
+.load-quiz-row {
+  align-items: end;
+}
+
+.load-quiz-row label {
+  margin-bottom: 0;
+}
+
+.load-quiz-row select {
+  min-width: min(420px, 60vw);
+}
+
+[hidden] {
+  display: none !important;
+}
