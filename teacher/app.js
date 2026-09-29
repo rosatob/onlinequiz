@@ -19,13 +19,50 @@ async function apiPost(data) {
             "text/plain;charset=utf-8"
         },
         body:
-          JSON.stringify(data)
+          JSON.stringify({
+            ...data,
+            idToken: window.teacherAuth?.idToken || ""
+          })
       }
     );
 
   return await response.json();
 
 }
+
+async function loadQuizList(selectedQuizID) {
+  const select = document.getElementById("quiz-id");
+  const status = document.getElementById("quiz-list-status");
+  status.textContent = "Loading quizzes...";
+
+  try {
+    const result = await apiPost({ action: "listTeacherQuizzes" });
+    if (!result.success) throw new Error(result.error || "Unable to load quizzes.");
+
+    select.replaceChildren(new Option("Create a new quiz", ""));
+    (result.quizzes || []).forEach(quiz => {
+      const option = new Option(
+        (quiz.title || "Untitled quiz") + " (" + quiz.quizID + ")",
+        quiz.quizID
+      );
+      select.appendChild(option);
+    });
+
+    if (selectedQuizID && !Array.from(select.options).some(option => option.value === selectedQuizID)) {
+      select.appendChild(new Option(selectedQuizID, selectedQuizID));
+    }
+    select.value = selectedQuizID || "";
+    status.textContent = (result.quizzes || []).length + " quiz" +
+      ((result.quizzes || []).length === 1 ? "" : "zes") + " available.";
+  } catch (error) {
+    status.textContent = "Quiz list unavailable: " + error.message;
+    console.error("Load quiz list error:", error);
+  }
+}
+
+window.addEventListener("teacher-auth-ready", () => {
+  loadQuizList(loadedQuizID);
+});
 
 
 /*
@@ -353,15 +390,7 @@ function renderQuestions() {
        * IMAGE
        */
 
-      createImageControls(
-        card,
-        question
-      );
-
-      createYouTubeControls(
-        card,
-        question
-      );
+      createMediaControls(card, question);
 
       /*
        * QUESTION TYPE
@@ -525,63 +554,42 @@ function renderQuestions() {
          */
 
         const correctRow =
-          document.createElement("div");
+          document.createElement("fieldset");
 
         correctRow.className =
           "correct-row";
 
+        const correctLegend =
+          document.createElement("legend");
 
-        const correctLabel =
-          document.createElement("label");
-
-        correctLabel.textContent =
+        correctLegend.textContent =
           "Correct Answer";
 
+        correctRow.appendChild(correctLegend);
 
-        const correctSelect =
-          document.createElement("select");
+        ["A", "B", "C", "D"].forEach(letter => {
+          const optionLabel =
+            document.createElement("label");
 
+          optionLabel.className = "correct-option";
 
-        ["A", "B", "C", "D"]
-          .forEach(letter => {
+          const radio =
+            document.createElement("input");
 
-            const option =
-              document.createElement("option");
-
-            option.value = letter;
-
-            option.textContent =
-              letter;
-
-            correctSelect.appendChild(
-              option
-            );
-
+          radio.type = "radio";
+          radio.name = "correct-" + question.questionID;
+          radio.value = letter;
+          radio.checked = question.correctAnswer === letter;
+          radio.addEventListener("change", () => {
+            question.correctAnswer = letter;
           });
 
-
-        correctSelect.value =
-          question.correctAnswer;
-
-
-        correctSelect.addEventListener(
-          "change",
-          () => {
-
-            question.correctAnswer =
-              correctSelect.value;
-
-          }
-        );
-
-
-        correctRow.appendChild(
-          correctLabel
-        );
-
-        correctRow.appendChild(
-          correctSelect
-        );
+          optionLabel.appendChild(radio);
+          optionLabel.appendChild(
+            document.createTextNode(letter + ": " + (question["choice" + letter] || ""))
+          );
+          correctRow.appendChild(optionLabel);
+        });
 
         choices.appendChild(
           correctRow
@@ -666,13 +674,27 @@ function renderQuestions() {
  * IMAGE CONTROLS
  */
 
+function createMediaControls(card, question) {
+  const section = document.createElement("section");
+  section.className = "media-section";
+
+  const heading = document.createElement("h3");
+  heading.textContent = "Question Media";
+  section.appendChild(heading);
+
+  createImageControls(section, question);
+  createYouTubeControls(section, question);
+  card.appendChild(section);
+}
+
+
 function createImageControls(card, question) {
 
   const section =
     document.createElement("div");
 
   section.className =
-    "image-section";
+    "media-image-controls";
 
 
   const label =
@@ -1243,6 +1265,16 @@ async function saveQuiz() {
       .checked;
 
 
+  const selectedQuizID = document.getElementById("quiz-id").value;
+  if (selectedQuizID && selectedQuizID !== loadedQuizID) {
+    alert("Load the selected quiz before saving it.");
+    return;
+  }
+  if (loadedQuizID && !selectedQuizID) {
+    alert("Reload the current quiz before saving, or start a new quiz in a fresh editor page.");
+    return;
+  }
+
   if (!title) {
 
     alert(
@@ -1420,7 +1452,11 @@ async function saveQuiz() {
 
     // Keep this ID so subsequent saves update the same quiz.
     loadedQuizID = quizID;
-    document.getElementById("quiz-id").value = quizID;
+    const quizSelect = document.getElementById("quiz-id");
+    if (!Array.from(quizSelect.options).some(option => option.value === quizID)) {
+      quizSelect.appendChild(new Option(title + " (" + quizID + ")", quizID));
+    }
+    quizSelect.value = quizID;
 
 
     /*
@@ -1704,7 +1740,7 @@ function createYouTubeControls(card, question) {
     document.createElement("div");
 
   section.className =
-    "youtube-section";
+    "media-youtube-controls";
 
 
   const label =
