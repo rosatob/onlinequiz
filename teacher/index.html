@@ -8,21 +8,40 @@
   <title>Quiz Editor</title>
 
   <link rel="stylesheet" href="style.css">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="auth.js" defer></script>
 </head>
 
 <body>
 
   <main class="editor-container">
 
-    <h1>Quiz Editor</h1>
+    <section id="sign-in-gate" class="sign-in-gate">
+      <h1>Teacher Portal</h1>
+      <p>Sign in with your SFUSD Google account to manage quizzes and view results.</p>
+      <div id="google-sign-in-button"></div>
+      <p id="auth-message" class="auth-message" role="status"></p>
+    </section>
+
+    <div id="editor-content" hidden>
+      <header class="teacher-header">
+        <h1>Quiz Editor</h1>
+        <nav aria-label="Teacher tools">
+          <a class="active" href="index.html">Quiz Editor</a>
+          <a href="results.html">Quiz Results</a>
+        </nav>
+        <div class="account-controls">
+          <span id="signed-in-email"></span>
+          <button type="button" id="sign-out">Sign out</button>
+        </div>
+      </header>
 
     <div class="load-quiz-row">
-      <label for="quiz-id">Quiz ID</label>
-      <input
-        type="text"
-        id="quiz-id"
-        placeholder="Enter QuizID"
-      >
+      <label for="quiz-id">Load an existing quiz</label>
+      <select id="quiz-id" aria-describedby="quiz-list-status">
+        <option value="">Create a new quiz</option>
+      </select>
+      <span id="quiz-list-status" class="field-status" role="status"></span>
       <button type="button" id="load-quiz">
         Load Quiz
       </button>
@@ -113,6 +132,7 @@
         </div>
       </div>
 
+    </div>
     </div>
 
   </main>
