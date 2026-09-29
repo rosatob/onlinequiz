@@ -172,7 +172,7 @@ function renderQuestions() {
         "question-number";
 
       number.textContent =
-        "Question " + (index + 1);
+        "Question " + (index + 1) + ":";
 
 
       const deleteButton =
@@ -335,81 +335,32 @@ function renderQuestions() {
       );
 
       header.appendChild(number);
+      reorderButtons.appendChild(upButton);
+      reorderButtons.appendChild(downButton);
 
-      header.appendChild(
-        deleteButton
-      );
-      
-      header.appendChild(
-        duplicateButton
-      );
+      const questionActions = document.createElement("div");
+      questionActions.className = "question-actions";
+      questionActions.appendChild(deleteButton);
+      questionActions.appendChild(duplicateButton);
+      questionActions.appendChild(reorderButtons);
 
-      reorderButtons.appendChild(
-        upButton
-      );
-      
-      reorderButtons.appendChild(
-        downButton
-      );
-      
-      header.appendChild(
-        reorderButtons
-      );
-      
-      
+      const questionField = document.createElement("div");
+      questionField.className = "question-field";
+
+      const questionInput = document.createElement("textarea");
+      questionInput.rows = 1;
+      questionInput.className = "question-prompt-input";
+      questionInput.setAttribute("aria-label", "Question " + (index + 1) + " text");
+      questionInput.placeholder = "Enter question text";
+      questionInput.value = question.question;
+      questionInput.addEventListener("input", () => {
+        question.question = questionInput.value;
+      });
+
+      questionField.appendChild(questionInput);
+      header.appendChild(questionField);
+      header.appendChild(questionActions);
       card.appendChild(header);
-      
-      
-
-      /*
-       * QUESTION TEXT
-       */
-
-      const questionField =
-        document.createElement("div");
-
-      questionField.className =
-        "question-field";
-
-
-      const questionLabel =
-        document.createElement("label");
-
-      questionLabel.textContent =
-        "Question";
-
-
-      const questionInput =
-        document.createElement("textarea");
-
-      questionInput.rows = 3;
-
-      questionInput.value =
-        question.question;
-
-
-      questionInput.addEventListener(
-        "input",
-        () => {
-
-          question.question =
-            questionInput.value;
-
-        }
-      );
-
-
-      questionLabel.appendChild(
-        questionInput
-      );
-
-      questionField.appendChild(
-        questionLabel
-      );
-
-      card.appendChild(
-        questionField
-      );
 
 
       /*
@@ -426,7 +377,7 @@ function renderQuestions() {
         document.createElement("div");
 
       typeField.className =
-        "question-field";
+        "question-field question-type-field";
 
 
       const typeLabel =
@@ -490,10 +441,27 @@ function renderQuestions() {
         typeLabel
       );
 
-      card.appendChild(
-        typeField
-      );
+      const settingsRow = document.createElement("div");
+      settingsRow.className = "question-settings-row";
+      settingsRow.appendChild(typeField);
 
+      const pointsRow = document.createElement("div");
+      pointsRow.className = "points-row";
+      const pointsLabel = document.createElement("label");
+      pointsLabel.textContent = "Points Possible";
+      const pointsInput = document.createElement("input");
+      pointsInput.type = "number";
+      pointsInput.min = "0";
+      pointsInput.step = "1";
+      pointsInput.value = question.pointsPossible;
+      pointsInput.setAttribute("aria-label", "Points possible");
+      pointsInput.addEventListener("input", () => {
+        question.pointsPossible = Number(pointsInput.value) || 0;
+      });
+      pointsRow.appendChild(pointsLabel);
+      pointsRow.appendChild(pointsInput);
+      settingsRow.appendChild(pointsRow);
+      card.appendChild(settingsRow);
 
       /*
        * MULTIPLE CHOICE
@@ -511,180 +479,60 @@ function renderQuestions() {
           "choices";
 
 
-        const choiceProperties = [
-          "choiceA",
-          "choiceB",
-          "choiceC",
-          "choiceD"
-        ];
-        
-        choiceProperties.forEach(
-          (property, choiceIndex) => {
-        
-            const row =
-              document.createElement("div");
-        
-            row.className =
-              "choice-row";
-        
-            const label =
-              document.createElement("div");
-        
-            label.className =
-              "choice-label";
-        
-            label.textContent =
-              String.fromCharCode(
-                65 + choiceIndex
-              );
-        
-            const input =
-              document.createElement("input");
-        
-            input.type = "text";
-        
-            input.value =
-              question[property] || "";
-        
-            input.placeholder =
-              "Answer choice " +
-              String.fromCharCode(
-                65 + choiceIndex
-              );
-        
-            input.addEventListener(
-              "input",
-              () => {
-        
-                question[property] =
-                  input.value;
-        
-              }
-            );
-        
-            row.appendChild(label);
-        
-            row.appendChild(input);
-        
-            choices.appendChild(row);
-        
-          }
-        );
+        const choiceProperties = ["choiceA", "choiceB", "choiceC", "choiceD"];
 
+        const choiceHeading = document.createElement("div");
+        choiceHeading.className = "choice-row choice-heading";
+        const answerHeading = document.createElement("span");
+        answerHeading.className = "choice-heading-label";
+        answerHeading.textContent = "Answer choice";
+        const correctHeading = document.createElement("span");
+        correctHeading.className = "correct-heading";
+        correctHeading.textContent = "Correct";
+        choiceHeading.appendChild(document.createElement("span"));
+        choiceHeading.appendChild(answerHeading);
+        choiceHeading.appendChild(correctHeading);
+        choices.appendChild(choiceHeading);
 
-            
+        choiceProperties.forEach((property, choiceIndex) => {
+          const letter = String.fromCharCode(65 + choiceIndex);
+          const row = document.createElement("div");
+          row.className = "choice-row";
+          const choiceLabel = document.createElement("div");
+          choiceLabel.className = "choice-label";
+          choiceLabel.textContent = letter;
 
+          const input = document.createElement("input");
+          input.type = "text";
+          input.value = question[property] || "";
+          input.placeholder = "Answer choice " + letter;
+          input.setAttribute("aria-label", "Answer choice " + letter);
+          input.addEventListener("input", () => {
+            question[property] = input.value;
+          });
 
-        /*
-         * CORRECT ANSWER
-         */
-
-        const correctRow =
-          document.createElement("fieldset");
-
-        correctRow.className =
-          "correct-row";
-
-        const correctLegend =
-          document.createElement("legend");
-
-        correctLegend.textContent =
-          "Correct Answer";
-
-        correctRow.appendChild(correctLegend);
-
-        ["A", "B", "C", "D"].forEach(letter => {
-          const optionLabel =
-            document.createElement("label");
-
-          optionLabel.className = "correct-option";
-
-          const radio =
-            document.createElement("input");
-
+          const correctCell = document.createElement("label");
+          correctCell.className = "correct-radio-cell";
+          const radio = document.createElement("input");
           radio.type = "radio";
           radio.name = "correct-" + question.questionID;
           radio.value = letter;
           radio.checked = question.correctAnswer === letter;
+          radio.setAttribute("aria-label", "Mark choice " + letter + " as correct");
           radio.addEventListener("change", () => {
             question.correctAnswer = letter;
           });
+          correctCell.appendChild(radio);
 
-          optionLabel.appendChild(radio);
-          optionLabel.appendChild(
-            document.createTextNode(letter + ": " + (question["choice" + letter] || ""))
-          );
-          correctRow.appendChild(optionLabel);
+          row.appendChild(choiceLabel);
+          row.appendChild(input);
+          row.appendChild(correctCell);
+          choices.appendChild(row);
         });
-
-        choices.appendChild(
-          correctRow
-        );
-
-
-        
-
-        
-
 
         card.appendChild(choices);
 
       }
-
-      /*
-       * POINTS
-       */
-      
-      const pointsRow =
-        document.createElement("div");
-      
-      pointsRow.className =
-        "points-row";
-      
-      const pointsLabel =
-        document.createElement("label");
-      
-      pointsLabel.textContent =
-        "Points Possible";
-      
-      const pointsInput =
-        document.createElement("input");
-      
-      pointsInput.type =
-        "number";
-      
-      pointsInput.min =
-        "0";
-      
-      pointsInput.step =
-        "1";
-      
-      pointsInput.value =
-        question.pointsPossible;
-      
-      pointsInput.addEventListener(
-        "input",
-        () => {
-      
-          question.pointsPossible =
-            Number(
-              pointsInput.value
-            ) || 0;
-      
-        }
-      );
-      
-      pointsRow.appendChild(
-        pointsLabel
-      );
-      
-      pointsRow.appendChild(
-        pointsInput
-      );
-      
-      card.appendChild(
-        pointsRow
-      );
 
       container.appendChild(card);
 
