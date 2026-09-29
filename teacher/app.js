@@ -64,6 +64,31 @@ window.addEventListener("teacher-auth-ready", () => {
   loadQuizList(loadedQuizID);
 });
 
+document.getElementById("new-quiz").addEventListener("click", startNewQuiz);
+
+function startNewQuiz() {
+  const hasContent = Boolean(
+    loadedQuizID ||
+    document.getElementById("quiz-title").value.trim() ||
+    questions.some(question => question.question.trim())
+  );
+
+  if (hasContent && !window.confirm("Start a new quiz? Unsaved editor changes will be cleared.")) {
+    return;
+  }
+
+  loadedQuizID = null;
+  document.getElementById("quiz-id").value = "";
+  document.getElementById("quiz-title").value = "";
+  document.getElementById("quiz-description").value = "";
+  document.getElementById("allow-editing").checked = false;
+  document.getElementById("save-message").textContent = "";
+  document.getElementById("quiz-link-area").style.display = "none";
+  questions = [];
+  questionCounter = 0;
+  addQuestion();
+}
+
 
 /*
  * ADD QUESTION
