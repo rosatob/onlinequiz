@@ -34,53 +34,29 @@
           <button type="button" id="sign-out">Sign out</button>
         </div>
       </header>
+    <section class="panel">
+    <div class="quiz-chooser">
+      <div class="quiz-chooser-column">
+        <h3>Load Quiz</h3>
+        <select id="quiz-id" aria-describedby="quiz-list-status">
+        <option value="">Load an Existing Quiz</option>
+        </select>
+        <button type="button" id="load-quiz">Load Quiz</button>
+      </div>
+      <div class="divider-column"></div>
+      <div class="quiz-chooser-column">  
+        <h3>New Quiz</h3>
+        <input type="text" id="quiz-title" placeholder="Enter quiz title">
+        <textarea id="quiz-description" placeholder="Enter a description" rows="2"></textarea>
+        <label class="checkbox-label">
+        <input type="checkbox" id="allow-editing">
+        Allow students to edit submissions
+        </label>
 
-    <div class="load-quiz-row">
-      <label for="quiz-id">Load an existing quiz</label>
-      <select id="quiz-id" aria-describedby="quiz-list-status">
-        <option value="">Create a new quiz</option>
-      </select>
-      <button type="button" id="new-quiz">New Quiz</button>
-      <span id="quiz-list-status" class="field-status" role="status"></span>
-      <button type="button" id="load-quiz">
-        Load Quiz
-      </button>
+      </div>
+      
     </div>
     
-    <!-- QUIZ INFORMATION -->
-    <section class="panel">
-
-      <h2>Quiz Information</h2>
-
-      <label>
-        Quiz Title
-        <input
-          type="text"
-          id="quiz-title"
-          placeholder="Enter quiz title"
-        >
-      </label>
-
-      <label>
-        Description
-        <textarea
-          id="quiz-description"
-          placeholder="Enter a description"
-          rows="3"
-        ></textarea>
-      </label>
-
-      <label class="checkbox-label">
-
-        <input
-          type="checkbox"
-          id="allow-editing"
-        >
-
-        Allow students to edit their answers after submitting
-
-      </label>
-
     </section>
 
 
