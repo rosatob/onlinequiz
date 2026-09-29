@@ -35,34 +35,52 @@
         </div>
       </header>
 
-    <section class="panel quiz-setup-panel" aria-label="Quiz setup">
-      <div class="quiz-setup-column quiz-create-column">
-        <div class="quiz-setup-heading">
-          <h2>New Quiz</h2>
-          <button type="button" id="new-quiz">Start New Quiz</button>
-        </div>
-        <label>
-          Quiz Title
-          <input type="text" id="quiz-title" placeholder="Enter quiz title">
-        </label>
-        <label>
-          Description
-          <textarea id="quiz-description" placeholder="Enter a description" rows="3"></textarea>
-        </label>
-        <label class="checkbox-label">
-          <input type="checkbox" id="allow-editing">
-          Allow students to edit their answers after submitting
-        </label>
-      </div>
-      <div class="quiz-setup-column quiz-load-column">
-        <h2>Load Quiz</h2>
-        <label for="quiz-id">Choose a saved quiz</label>
-        <select id="quiz-id" aria-describedby="quiz-list-status">
-          <option value="">Select a quiz</option>
-        </select>
-        <span id="quiz-list-status" class="field-status" role="status"></span>
-        <button type="button" id="load-quiz" class="primary-button">Load Quiz</button>
-      </div>
+    <div class="load-quiz-row">
+      <label for="quiz-id">Load an existing quiz</label>
+      <select id="quiz-id" aria-describedby="quiz-list-status">
+        <option value="">Create a new quiz</option>
+      </select>
+      <button type="button" id="new-quiz">New Quiz</button>
+      <span id="quiz-list-status" class="field-status" role="status"></span>
+      <button type="button" id="load-quiz">
+        Load Quiz
+      </button>
+    </div>
+    
+    <!-- QUIZ INFORMATION -->
+    <section class="panel">
+
+      <h2>Quiz Information</h2>
+
+      <label>
+        Quiz Title
+        <input
+          type="text"
+          id="quiz-title"
+          placeholder="Enter quiz title"
+        >
+      </label>
+
+      <label>
+        Description
+        <textarea
+          id="quiz-description"
+          placeholder="Enter a description"
+          rows="3"
+        ></textarea>
+      </label>
+
+      <label class="checkbox-label">
+
+        <input
+          type="checkbox"
+          id="allow-editing"
+        >
+
+        Allow students to edit their answers after submitting
+
+      </label>
+
     </section>
 
 
