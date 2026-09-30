@@ -27,7 +27,7 @@
       <header class="teacher-header">
         <h1>Quiz Editor</h1>
         <nav aria-label="Teacher tools">
-          <a class="active" href="index.html">Quiz Editor</a>
+          <a class="active" href="index.html">Quiz Editor Home Page</a>
         </nav>
         <div class="account-controls">
           <span id="signed-in-email"></span>
@@ -110,11 +110,10 @@
       <div id="save-message" class="save-message"></div>
 
       <div id="quiz-link-area" class="quiz-link-area" style="display: none;">
-        <label for="quiz-link">Student Quiz URL</label>
         <div class="quiz-link-row">
-          <input type="text" id="quiz-link" readonly>
+          <input type="text" id="quiz-link" aria-label="Student quiz link" readonly>
           <button type="button" id="copy-quiz-link">
-            Copy Link
+            Copy Student Quiz Link
           </button>
         </div>
       </div>
