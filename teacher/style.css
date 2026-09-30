@@ -874,3 +874,22 @@ button:hover {
     min-width: 900px;
   }
 }
+
+.quiz-chooser {
+  display: flex;
+  gap: 5px;
+  
+  
+}
+
+.quiz-chooser-column {
+  flex: 1;
+  padding: 10px;
+  border: black;
+  border-radius: 1%;
+  border-color:black;
+}
+.divider-column {
+  flex: .01;
+  background-color: black;
+}
