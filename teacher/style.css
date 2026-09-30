@@ -952,22 +952,29 @@ button:hover {
 }
 
 
-/* Give the student link room to show the full URL. */
+/* Keep the student link and copy action on the save controls row. */
 .save-area {
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  width: 100%;
 }
 
 .quiz-link-area {
-  flex: 1 1 100%;
+  flex: 1 1 auto;
   min-width: 0;
-  margin-top: 8px;
+  margin-top: 0;
 }
 
 .quiz-link-row {
   width: 100%;
+  min-width: 0;
+  margin-top: 0;
 }
 
 .quiz-link-row input {
   flex: 1 1 auto;
   min-width: 0;
+}
+
+.quiz-link-row button {
+  flex: 0 0 auto;
 }
