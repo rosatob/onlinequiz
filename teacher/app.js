@@ -1380,7 +1380,7 @@ async function saveQuiz() {
     
     document.getElementById(
       "quiz-link-area"
-    ).style.display = "block";
+    ).style.display = "flex";
     
     console.log(
       "Quiz saved:",
