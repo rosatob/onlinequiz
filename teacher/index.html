@@ -39,11 +39,10 @@
         <div class="quiz-chooser-column">
           <h2>Load a Quiz</h2>
           <label for="quiz-id">Choose a saved quiz</label>
-          <select id="quiz-id" aria-describedby="quiz-list-status">
+          <select id="quiz-id" disabled>
             <option value="">Select an existing quiz</option>
           </select>
-          <span id="quiz-list-status" class="field-status" role="status"></span>
-          <button type="button" id="load-quiz" class="primary-button">Load Quiz</button>
+          <button type="button" id="load-quiz" class="load-quiz-button" disabled>Retrieving Quizzes</button>
         </div>
 
         <div class="divider-column" aria-hidden="true"></div>
