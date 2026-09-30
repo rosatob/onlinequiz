@@ -210,10 +210,6 @@ button:hover {
   background: #256628;
 }
 
-.save-message {
-  font-weight: bold;
-}
-
 .image-section {
   margin: 20px 0;
   padding: 15px;
@@ -977,4 +973,16 @@ button:hover {
 
 .quiz-link-row button {
   flex: 0 0 auto;
+}
+
+
+.save-button:disabled {
+  background: #9aa3ad;
+  border-color: #9aa3ad;
+  color: #fff;
+  cursor: default;
+}
+
+.save-button.is-saving:disabled {
+  cursor: wait;
 }
