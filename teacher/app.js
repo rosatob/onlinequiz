@@ -5,6 +5,8 @@ let questions = [];
 let questionCounter = 0;
 
 let loadedQuizID = null;
+let quizEditVersion = 0;
+let saveInProgress = false;
 
 async function apiPost(data) {
 
@@ -82,7 +84,8 @@ function startNewQuiz() {
     document.getElementById("new-quiz-description").value.trim();
   document.getElementById("allow-editing").checked =
     document.getElementById("new-allow-editing").checked;
-  document.getElementById("save-message").textContent = "";
+  resetSaveButton();
+  quizEditVersion = 0;
   document.getElementById("quiz-link-area").style.display = "none";
 
   questions = [];
@@ -977,6 +980,7 @@ function createImageControls(card, question) {
 
         question.imageName =
           imageName;
+        markQuizDirty();
 
         const mediaResult =
           await apiPost({
@@ -1121,6 +1125,31 @@ document
     saveQuiz
   );
 
+const quizEditor = document.getElementById("quiz-editor");
+quizEditor.addEventListener("input", event => {
+  if (!event.target.matches('input[type="file"]')) markQuizDirty();
+});
+quizEditor.addEventListener("change", event => {
+  if (!event.target.matches('input[type="file"]')) markQuizDirty();
+});
+quizEditor.addEventListener("click", event => {
+  if (event.target.closest("#add-question, .question-actions button, .media-image-controls > .delete-button")) {
+    markQuizDirty();
+  }
+}, true);
+
+function resetSaveButton() {
+  const button = document.getElementById("save-quiz");
+  button.textContent = "Save Quiz";
+  button.disabled = false;
+  button.classList.remove("is-saving", "is-saved");
+}
+
+function markQuizDirty() {
+  quizEditVersion += 1;
+  if (saveInProgress) return;
+  resetSaveButton();
+}
 
 async function saveQuiz() {
 
@@ -1283,13 +1312,13 @@ async function saveQuiz() {
   }
 
 
-  const saveMessage =
-    document.getElementById(
-      "save-message"
-    );
-
-  saveMessage.textContent =
-    "Saving quiz...";
+  const saveVersion = quizEditVersion;
+  const saveButton = document.getElementById("save-quiz");
+  saveInProgress = true;
+  saveButton.textContent = "Saving Quiz";
+  saveButton.disabled = true;
+  saveButton.classList.add("is-saving");
+  saveButton.classList.remove("is-saved");
 
 
   try {
@@ -1367,7 +1396,15 @@ async function saveQuiz() {
     }
 
 
-    saveMessage.textContent = "Quiz Created.";
+    saveInProgress = false;
+    if (quizEditVersion === saveVersion) {
+      saveButton.textContent = "Quiz Created.";
+      saveButton.disabled = true;
+      saveButton.classList.remove("is-saving");
+      saveButton.classList.add("is-saved");
+    } else {
+      resetSaveButton();
+    }
 
     const quizLink =
       window.location.origin +
@@ -1401,8 +1438,8 @@ async function saveQuiz() {
     );
 
 
-    saveMessage.textContent =
-      "Unable to save quiz.";
+    saveInProgress = false;
+    resetSaveButton();
 
 
     alert(
@@ -1535,6 +1572,7 @@ async function chooseExistingImage(question) {
           question.imageName =
             image.name;
 
+          markQuizDirty();
           overlay.remove();
 
           renderQuestions();
@@ -1848,6 +1886,9 @@ async function loadQuiz() {
 
     console.log("Loaded quiz response:", result);
     loadedQuizID = result.quiz.quizID;
+    quizEditVersion = 0;
+    saveInProgress = false;
+    resetSaveButton();
     document.getElementById("quiz-id").value = loadedQuizID;
     document.getElementById("quiz-title").value =
       result.quiz.title || "";
