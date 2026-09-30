@@ -893,3 +893,60 @@ button:hover {
   flex: .01;
   background-color: black;
 }
+
+
+/* Start screen: choose an existing quiz or initialize a new one. */
+.quiz-chooser {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.quiz-chooser-column {
+  min-width: 0;
+  padding: 8px;
+}
+
+.quiz-chooser-column h2 {
+  margin: 0 0 18px;
+}
+
+.quiz-chooser-column > label:not(.checkbox-label) {
+  margin: 0;
+}
+
+.quiz-chooser-column select {
+  margin-top: 6px;
+}
+
+.quiz-chooser-column .field-status {
+  min-height: 20px;
+  margin: 8px 0 12px;
+}
+
+.quiz-chooser-column .checkbox-label {
+  margin: 12px 0 18px;
+}
+
+.divider-column {
+  width: 1px;
+  background: #d9dee7;
+}
+
+.quiz-info-panel h2 {
+  margin-bottom: 18px;
+}
+
+.quiz-info-panel > label:not(.checkbox-label) {
+  margin-bottom: 0;
+}
+
+.quiz-info-panel input[type="text"],
+.quiz-info-panel textarea {
+  margin-bottom: 14px;
+}
+
+.quiz-info-panel .checkbox-label {
+  margin: 0;
+}
