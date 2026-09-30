@@ -1367,9 +1367,7 @@ async function saveQuiz() {
     }
 
 
-    saveMessage.textContent =
-      (quizResult.created ? "Quiz created. QuizID: " : "Quiz saved. QuizID: ") +
-      quizID;
+    saveMessage.textContent = "Quiz Created.";
 
     const quizLink =
       window.location.origin +
@@ -1813,7 +1811,7 @@ document
 
       document.getElementById(
         "copy-quiz-link"
-      ).textContent = "Copy Link";
+      ).textContent = "Copy Student Quiz Link";
 
     }, 1500);
 
