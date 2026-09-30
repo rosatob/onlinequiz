@@ -986,3 +986,13 @@ button:hover {
 .save-button.is-saving:disabled {
   cursor: wait;
 }
+
+
+.load-quiz-button:disabled,
+.load-quiz-button:disabled:hover {
+  background: #9aa3ad;
+  border-color: #9aa3ad;
+  color: #fff;
+  cursor: default;
+  opacity: 1;
+}
