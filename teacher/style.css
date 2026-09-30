@@ -950,3 +950,24 @@ button:hover {
 .quiz-info-panel .checkbox-label {
   margin: 0;
 }
+
+
+/* Give the student link room to show the full URL. */
+.save-area {
+  flex-wrap: wrap;
+}
+
+.quiz-link-area {
+  flex: 1 1 100%;
+  min-width: 0;
+  margin-top: 8px;
+}
+
+.quiz-link-row {
+  width: 100%;
+}
+
+.quiz-link-row input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
