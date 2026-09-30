@@ -7,6 +7,8 @@ let questionCounter = 0;
 let loadedQuizID = null;
 let quizEditVersion = 0;
 let saveInProgress = false;
+let quizListReady = false;
+let quizListLoading = false;
 
 async function apiPost(data) {
 
@@ -33,9 +35,16 @@ async function apiPost(data) {
 }
 
 async function loadQuizList(selectedQuizID) {
+  if (quizListLoading) return;
+
   const select = document.getElementById("quiz-id");
-  const status = document.getElementById("quiz-list-status");
-  status.textContent = "Loading quizzes...";
+  const button = document.getElementById("load-quiz");
+  quizListReady = false;
+  quizListLoading = true;
+  select.disabled = true;
+  button.disabled = true;
+  button.textContent = "Retrieving Quizzes";
+  button.classList.remove("primary-button");
 
   try {
     const result = await apiPost({ action: "listTeacherQuizzes" });
@@ -43,23 +52,28 @@ async function loadQuizList(selectedQuizID) {
 
     select.replaceChildren(new Option("Select an existing quiz", ""));
     (result.quizzes || []).forEach(quiz => {
-      const option = new Option(
+      select.appendChild(new Option(
         (quiz.title || "Untitled quiz") + " (" + quiz.quizID + ")",
         quiz.quizID
-      );
-      select.appendChild(option);
+      ));
     });
 
     if (selectedQuizID && !Array.from(select.options).some(option => option.value === selectedQuizID)) {
       select.appendChild(new Option(selectedQuizID, selectedQuizID));
     }
     select.value = selectedQuizID || "";
-    const quizCount = (result.quizzes || []).length;
-    status.textContent = quizCount +
-      (quizCount === 1 ? " quiz available." : " quizzes available.");
+    quizListReady = true;
+    select.disabled = false;
+    button.textContent = "Load Quiz";
+    button.disabled = false;
+    button.classList.add("primary-button");
   } catch (error) {
-    status.textContent = "Quiz list unavailable: " + error.message;
     console.error("Load quiz list error:", error);
+    button.textContent = "Retry Quiz List";
+    button.disabled = false;
+    button.classList.add("primary-button");
+  } finally {
+    quizListLoading = false;
   }
 }
 
@@ -1856,17 +1870,18 @@ document
   });
 
 async function loadQuiz() {
-  console.log("loadQuiz function loaded");
-  const quizID =
-    document
-      .getElementById("quiz-id")
-      .value
-      .trim();
+  const select = document.getElementById("quiz-id");
+  const button = document.getElementById("load-quiz");
+  const quizID = select.value.trim();
 
   if (!quizID) {
-    alert("Please enter a QuizID.");
+    alert("Please select a quiz.");
     return;
   }
+
+  button.textContent = "Loading Quiz...";
+  button.disabled = true;
+  button.classList.remove("primary-button");
 
   try {
     console.log("Loading QuizID:", quizID);
@@ -1924,6 +1939,9 @@ async function loadQuiz() {
       error
     );
 
+    button.textContent = "Load Quiz";
+    button.disabled = false;
+    button.classList.add("primary-button");
     alert(
       "Unable to load quiz.\n\n" +
       error.message
@@ -1933,10 +1951,13 @@ async function loadQuiz() {
 
 document
   .getElementById("load-quiz")
-  .addEventListener(
-    "click",
-    loadQuiz
-  );
+  .addEventListener("click", () => {
+    if (quizListReady) {
+      loadQuiz();
+    } else if (!quizListLoading) {
+      loadQuizList();
+    }
+  });
 console.log("Load Quiz button listener attached");
 
 
