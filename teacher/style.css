@@ -990,9 +990,11 @@ button:hover {
 
 .load-quiz-button:disabled,
 .load-quiz-button:disabled:hover {
+  top
   background: #9aa3ad;
   border-color: #9aa3ad;
   color: #fff;
   cursor: default;
   opacity: 1;
+  padding: 5px;
 }
