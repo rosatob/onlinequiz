@@ -34,35 +34,49 @@
           <button type="button" id="sign-out">Sign out</button>
         </div>
       </header>
-    <section class="panel">
-    <div class="quiz-chooser">
-      <div class="quiz-chooser-column">
-        <h3>Load Quiz</h3>
-        <select id="quiz-id" aria-describedby="quiz-list-status">
-        <option value="">Load an Existing Quiz</option>
-        </select>
-        <span id="quiz-list-status" class="field-status" role="status"></span>
-        <button type="button" id="load-quiz">Load Quiz</button>
-      </div>
-      <div class="divider-column"></div>
-      <div class="quiz-chooser-column">  
-        <h3>New Quiz</h3>
-        
-        <input type="text" id="quiz-title" placeholder="Enter quiz title">
-        <textarea id="quiz-description" placeholder="Enter a description" rows="2"></textarea>
-        <label class="checkbox-label">
-        <input type="checkbox" id="allow-editing">
-        Allow students to edit submissions
-        </label>
+    <section id="quiz-start-screen" class="panel">
+      <div class="quiz-chooser">
+        <div class="quiz-chooser-column">
+          <h2>Load a Quiz</h2>
+          <label for="quiz-id">Choose a saved quiz</label>
+          <select id="quiz-id" aria-describedby="quiz-list-status">
+            <option value="">Select an existing quiz</option>
+          </select>
+          <span id="quiz-list-status" class="field-status" role="status"></span>
+          <button type="button" id="load-quiz" class="primary-button">Load Quiz</button>
+        </div>
 
+        <div class="divider-column" aria-hidden="true"></div>
+
+        <div class="quiz-chooser-column">
+          <h2>Create a Quiz</h2>
+          <label for="new-quiz-title">Quiz Title</label>
+          <input type="text" id="new-quiz-title" placeholder="Enter quiz title">
+          <label for="new-quiz-description">Description</label>
+          <textarea id="new-quiz-description" placeholder="Enter a description" rows="2"></textarea>
+          <label class="checkbox-label" for="new-allow-editing">
+            <input type="checkbox" id="new-allow-editing">
+            Allow students to edit their answers after submitting
+          </label>
+          <button type="button" id="start-editing" class="primary-button">Start Editing</button>
+        </div>
       </div>
-      
-    </div>
-    
     </section>
 
+    <div id="quiz-editor" hidden>
+      <section class="panel quiz-info-panel">
+        <h2>Quiz Details</h2>
+        <label for="quiz-title">Quiz Title</label>
+        <input type="text" id="quiz-title" placeholder="Enter quiz title">
+        <label for="quiz-description">Description</label>
+        <textarea id="quiz-description" placeholder="Enter a description" rows="2"></textarea>
+        <label class="checkbox-label" for="allow-editing">
+          <input type="checkbox" id="allow-editing">
+          Allow students to edit their answers after submitting
+        </label>
+      </section>
 
-    <!-- QUESTIONS -->
+      <!-- QUESTIONS -->
     <section class="panel">
 
       <div class="section-header">
@@ -93,7 +107,6 @@
       <button type="button" id="save-quiz" class="save-button">
         Save Quiz
       </button>
-      <button type="button" id="new-quiz">Clear and Begin New Quiz</button>
       <div id="save-message" class="save-message"></div>
 
       <div id="quiz-link-area" class="quiz-link-area" style="display: none;">
@@ -106,6 +119,7 @@
         </div>
       </div>
 
+    </div>
     </div>
     </div>
 
