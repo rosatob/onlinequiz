@@ -39,7 +39,7 @@ async function loadQuizList(selectedQuizID) {
     const result = await apiPost({ action: "listTeacherQuizzes" });
     if (!result.success) throw new Error(result.error || "Unable to load quizzes.");
 
-    select.replaceChildren(new Option("Create a new quiz", ""));
+    select.replaceChildren(new Option("Select an existing quiz", ""));
     (result.quizzes || []).forEach(quiz => {
       const option = new Option(
         (quiz.title || "Untitled quiz") + " (" + quiz.quizID + ")",
@@ -65,29 +65,32 @@ window.addEventListener("teacher-auth-ready", () => {
   loadQuizList(loadedQuizID);
 });
 
-document.getElementById("new-quiz").addEventListener("click", startNewQuiz);
+document.getElementById("start-editing").addEventListener("click", startNewQuiz);
 
 function startNewQuiz() {
-  const hasContent = Boolean(
-    loadedQuizID ||
-    document.getElementById("quiz-title").value.trim() ||
-    questions.some(question => question.question.trim())
-  );
-
-  if (hasContent && !window.confirm("Start a new quiz? Unsaved editor changes will be cleared.")) {
+  const title = document.getElementById("new-quiz-title").value.trim();
+  if (!title) {
+    alert("Please enter a quiz title to start.");
+    document.getElementById("new-quiz-title").focus();
     return;
   }
 
   loadedQuizID = null;
   document.getElementById("quiz-id").value = "";
-  document.getElementById("quiz-title").value = "";
-  document.getElementById("quiz-description").value = "";
-  document.getElementById("allow-editing").checked = false;
+  document.getElementById("quiz-title").value = title;
+  document.getElementById("quiz-description").value =
+    document.getElementById("new-quiz-description").value.trim();
+  document.getElementById("allow-editing").checked =
+    document.getElementById("new-allow-editing").checked;
   document.getElementById("save-message").textContent = "";
   document.getElementById("quiz-link-area").style.display = "none";
+
   questions = [];
   questionCounter = 0;
   addQuestion();
+
+  document.getElementById("quiz-start-screen").hidden = true;
+  document.getElementById("quiz-editor").hidden = false;
 }
 
 
@@ -1866,6 +1869,9 @@ async function loadQuiz() {
     questionCounter = questions.length;
     
     renderQuestions();
+
+    document.getElementById("quiz-start-screen").hidden = true;
+    document.getElementById("quiz-editor").hidden = false;
     
     console.log(
       "Loaded quiz into editor:",
